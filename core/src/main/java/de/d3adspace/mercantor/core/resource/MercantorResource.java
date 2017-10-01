@@ -26,8 +26,11 @@ import de.d3adspace.mercantor.core.registry.Service;
 import de.d3adspace.mercantor.core.registry.ServiceRegistry;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 /**
  * Resource for Jersey.
@@ -74,5 +77,13 @@ public class MercantorResource {
         }
 
         return Response.ok(service).build();
+    }
+
+    @POST
+    @Path("/service")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerService(@Context UriInfo uriInfo, String content) {
+        Service service = mercantor.createService(content);
+        return Response.created(URI.create(uriInfo.getPath() + "/" + service.getServiceKey())).build();
     }
 }
