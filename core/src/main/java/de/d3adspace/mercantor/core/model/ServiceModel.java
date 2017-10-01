@@ -19,34 +19,35 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.mercantor.core;
-
-import de.d3adspace.mercantor.core.config.MercantorConfig;
-import de.d3adspace.mercantor.core.config.MercantorConfigBuilder;
+package de.d3adspace.mercantor.core.model;
 
 /**
- * The factory to create new mercantor instances.
+ * Represents the model that will be sent by the services.
  *
  * @author Felix 'SasukeKawaii' Klauke
  */
-public class MercantorFactory {
+public class ServiceModel {
 
     /**
-     * Create a new mercantor instance by a default config.
-     *
-     * @return The mercantor instance.
+     * The base path of the service.
      */
-    public static IMercantor createMercantor() {
-        return createMercantor(new MercantorConfigBuilder().setHost("localhost").setPort(8080).createMercantorConfig());
+    private final String basePath;
+
+    /**
+     * Create a new model by its base path.
+     *
+     * @param basePath The base path.
+     */
+    public ServiceModel(String basePath) {
+        this.basePath = basePath;
     }
 
     /**
-     * Create a new mercantor instance by the given config.
+     * Get the base path.
      *
-     * @param config The config.
-     * @return The mercantor instance.
+     * @return The base path.
      */
-    public static IMercantor createMercantor(MercantorConfig config) {
-        return new MercantorImpl(config);
+    public String getBasePath() {
+        return basePath;
     }
 }

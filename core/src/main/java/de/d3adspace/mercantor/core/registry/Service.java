@@ -21,8 +21,51 @@
 
 package de.d3adspace.mercantor.core.registry;
 
+import java.util.UUID;
+
 /**
+ * Represents a service that is known to mercantor.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class Service {
+
+    /**
+     * The key of the service.
+     */
+    private final UUID uniqueId;
+
+    /**
+     * The base path of the service.
+     */
+    private final String basePath;
+
+    /**
+     * Create a new service by its unique id and its path.
+     *
+     * @param uniqueId The unique id.
+     * @param basePath The base path.
+     */
+    public Service(UUID uniqueId, String basePath) {
+        this.uniqueId = uniqueId;
+        this.basePath = basePath;
+    }
+
+    /**
+     * Get the service key.
+     *
+     * @return The key of the service.
+     */
+    public String getServiceKey() {
+        return uniqueId.toString();
+    }
+
+    /**
+     * Get the base path of the service.
+     *
+     * @return The base path of the service.
+     */
+    public String getBasePath() {
+        return basePath;
+    }
 }
