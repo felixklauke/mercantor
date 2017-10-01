@@ -24,6 +24,8 @@ package de.d3adspace.mercantor.core;
 import de.d3adspace.mercantor.core.model.ServiceModel;
 import de.d3adspace.mercantor.core.registry.Service;
 
+import java.util.Set;
+
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
@@ -78,4 +80,29 @@ public interface IMercantor {
      * @param service The service.
      */
     void registerService(Service service);
+
+    /**
+     * Update the given service.
+     *
+     * @param serviceKey The service key.
+     */
+    void updateService(String serviceKey);
+
+    /**
+     * Get a set of all active services.
+     *
+     * @return The services.
+     */
+    Set<Service> getServices();
+
+    /**
+     * Check if the given service is expired.
+     *
+     * @param service The service.
+     */
+    void checkService(Service service);
+
+    void markServiceAsBleeding(Service service);
+
+    void removeService(Service service);
 }

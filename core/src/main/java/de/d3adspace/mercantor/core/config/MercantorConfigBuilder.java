@@ -1,29 +1,14 @@
-/*
- * Copyright (c) 2017 Felix Klauke
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 package de.d3adspace.mercantor.core.config;
+
+import java.util.concurrent.TimeUnit;
 
 public class MercantorConfigBuilder {
     private String host;
     private int port;
+    private long serviceExpiration;
+    private TimeUnit serviceExpirationTimeUnit;
+    private long serviceExpirationCheckInterval;
+    private TimeUnit serviceExpirationCheckIntervalTimeUnit;
 
     public MercantorConfigBuilder setHost(String host) {
         this.host = host;
@@ -35,7 +20,27 @@ public class MercantorConfigBuilder {
         return this;
     }
 
+    public MercantorConfigBuilder setServiceExpiration(long serviceExpiration) {
+        this.serviceExpiration = serviceExpiration;
+        return this;
+    }
+
+    public MercantorConfigBuilder setServiceExpirationTimeUnit(TimeUnit serviceExpirationTimeUnit) {
+        this.serviceExpirationTimeUnit = serviceExpirationTimeUnit;
+        return this;
+    }
+
+    public MercantorConfigBuilder setServiceExpirationCheckInterval(long serviceExpirationCheckInterval) {
+        this.serviceExpirationCheckInterval = serviceExpirationCheckInterval;
+        return this;
+    }
+
+    public MercantorConfigBuilder setServiceExpirationCheckIntervalTimeUnit(TimeUnit serviceExpirationCheckIntervalTimeUnit) {
+        this.serviceExpirationCheckIntervalTimeUnit = serviceExpirationCheckIntervalTimeUnit;
+        return this;
+    }
+
     public MercantorConfig createMercantorConfig() {
-        return new MercantorConfig(host, port);
+        return new MercantorConfig(host, port, serviceExpiration, serviceExpirationTimeUnit, serviceExpirationCheckInterval, serviceExpirationCheckIntervalTimeUnit);
     }
 }

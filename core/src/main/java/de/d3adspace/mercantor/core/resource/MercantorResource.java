@@ -76,7 +76,21 @@ public class MercantorResource {
             return Response.noContent().build();
         }
 
+        if (service.isBleeding()) {
+            mercantor.removeService(service);
+            return Response.noContent().build();
+        }
+
         return Response.ok(service).build();
+    }
+
+    @PUT
+    @Path("/service/{serviceKey}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateService(@PathParam("serviceKey") String serviceKey) {
+        mercantor.updateService(serviceKey);
+        return Response.ok().build();
     }
 
     @POST
