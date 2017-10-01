@@ -101,12 +101,17 @@ public class MercantorImpl implements IMercantor {
     @Override
     public Service createService(String content) {
         ServiceModel serviceModel = gson.fromJson(content, ServiceModel.class);
+        return createService(serviceModel);
+    }
 
+    @Override
+    public Service createService(ServiceModel serviceModel) {
         UUID uniqueId = UUID.randomUUID();
-        Service service = new Service(uniqueId, serviceModel.getBasePath());
+        return new Service(uniqueId, serviceModel.getBasePath());
+    }
 
-        ServiceRegistry.registerService(uniqueId.toString(), service);
-
-        return service;
+    @Override
+    public void registerService(Service service) {
+        ServiceRegistry.registerService(service.getServiceKey(), service);
     }
 }

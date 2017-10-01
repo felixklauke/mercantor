@@ -84,6 +84,8 @@ public class MercantorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerService(@Context UriInfo uriInfo, String content) {
         Service service = mercantor.createService(content);
+        mercantor.registerService(service);
+
         return Response.created(URI.create(uriInfo.getPath() + "/" + service.getServiceKey())).build();
     }
 }

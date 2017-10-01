@@ -21,6 +21,7 @@
 
 package de.d3adspace.mercantor.core;
 
+import de.d3adspace.mercantor.core.model.ServiceModel;
 import de.d3adspace.mercantor.core.registry.Service;
 
 /**
@@ -62,4 +63,19 @@ public interface IMercantor {
      * @return The created service.
      */
     Service createService(String content);
+
+    /**
+     * Create a service by the given model.
+     *
+     * @param serviceModel The model of the service.
+     * @return The created service.
+     */
+    Service createService(ServiceModel serviceModel);
+
+    /**
+     * Register the given service.
+     *
+     * @param service The service.
+     */
+    void registerService(Service service);
 }
