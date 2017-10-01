@@ -21,6 +21,8 @@
 
 package de.d3adspace.mercantor.core.config;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
@@ -29,9 +31,19 @@ public class MercantorConfig {
     private final String host;
     private final int port;
 
-    public MercantorConfig(String host, int port) {
+    private final long serviceExpiration;
+    private final TimeUnit serviceExpirationTimeUnit;
+
+    private final long serviceExpirationCheckInterval;
+    private final TimeUnit serviceExpirationCheckIntervalTimeUnit;
+
+    public MercantorConfig(String host, int port, long serviceExpiration, TimeUnit serviceExpirationTimeUnit, long serviceExpirationCheckInterval, TimeUnit serviceExpirationCheckIntervalTimeUnit) {
         this.host = host;
         this.port = port;
+        this.serviceExpiration = serviceExpiration;
+        this.serviceExpirationTimeUnit = serviceExpirationTimeUnit;
+        this.serviceExpirationCheckInterval = serviceExpirationCheckInterval;
+        this.serviceExpirationCheckIntervalTimeUnit = serviceExpirationCheckIntervalTimeUnit;
     }
 
     public String getHost() {
@@ -40,5 +52,21 @@ public class MercantorConfig {
 
     public int getPort() {
         return port;
+    }
+
+    public long getServiceExpiration() {
+        return serviceExpiration;
+    }
+
+    public TimeUnit getServiceExpirationTimeUnit() {
+        return serviceExpirationTimeUnit;
+    }
+
+    public long getServiceExpirationCheckInterval() {
+        return serviceExpirationCheckInterval;
+    }
+
+    public TimeUnit getServiceExpirationCheckIntervalTimeUnit() {
+        return serviceExpirationCheckIntervalTimeUnit;
     }
 }

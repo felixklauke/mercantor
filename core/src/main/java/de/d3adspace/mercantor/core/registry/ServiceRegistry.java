@@ -21,7 +21,10 @@
 
 package de.d3adspace.mercantor.core.registry;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -79,5 +82,23 @@ public class ServiceRegistry {
      */
     public static Service getService(String serviceKey) {
         return services.get(serviceKey);
+    }
+
+    /**
+     * Get a set of all known services.
+     *
+     * @return The services.
+     */
+    public static Set<Service> getServices() {
+        return Collections.unmodifiableSet(new HashSet<>(services.values()));
+    }
+
+    /**
+     * Remove the given service.
+     *
+     * @param service The service.
+     */
+    public static void removeService(Service service) {
+        services.values().remove(service);
     }
 }
