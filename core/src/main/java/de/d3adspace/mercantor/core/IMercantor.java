@@ -53,4 +53,13 @@ public interface IMercantor {
      * @param serviceKey The key of the server.
      */
     void removeService(String serviceKey);
+
+    /**
+     * Create a new service by the given data.
+     *
+     * @param content The content of the service.
+     *
+     * @return The created service.
+     */
+    Service createService(String content);
 }

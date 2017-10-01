@@ -21,7 +21,10 @@
 
 package de.d3adspace.mercantor.core;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.d3adspace.mercantor.core.config.MercantorConfig;
+import de.d3adspace.mercantor.core.model.ServiceModel;
 import de.d3adspace.mercantor.core.registry.Service;
 import de.d3adspace.mercantor.core.registry.ServiceRegistry;
 import de.d3adspace.mercantor.core.resource.MercantorResource;
@@ -31,6 +34,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.UUID;
 
 /**
  * The default implementation of the {@link IMercantor}.
@@ -50,12 +54,18 @@ public class MercantorImpl implements IMercantor {
     private HttpServer httpServer;
 
     /**
+     * The gson instance used to parse requests.
+     */
+    private final Gson gson;
+
+    /**
      * Create a new mercantor impl by the config.
      *
      * @param config The config.
      */
     MercantorImpl(MercantorConfig config) {
         this.config = config;
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
     @Override
@@ -86,5 +96,17 @@ public class MercantorImpl implements IMercantor {
     @Override
     public void removeService(String serviceKey) {
         ServiceRegistry.removeService(serviceKey);
+    }
+
+    @Override
+    public Service createService(String content) {
+        ServiceModel serviceModel = gson.fromJson(content, ServiceModel.class);
+
+        UUID uniqueId = UUID.randomUUID();
+        Service service = new Service(uniqueId, serviceModel.getBasePath());
+
+        ServiceRegistry.registerService(uniqueId.toString(), service);
+
+        return service;
     }
 }
