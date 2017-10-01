@@ -70,6 +70,7 @@ public interface IMercantor {
      * Create a service by the given model.
      *
      * @param serviceModel The model of the service.
+     *
      * @return The created service.
      */
     Service createService(ServiceModel serviceModel);
@@ -102,7 +103,25 @@ public interface IMercantor {
      */
     void checkService(Service service);
 
+    /**
+     * Mark the given service as bleeding.
+     *
+     * @param service The service.
+     */
     void markServiceAsBleeding(Service service);
 
+    /**
+     * Remove the given service. Sad.
+     *
+     * @param service The service.
+     */
     void removeService(Service service);
+
+    /**
+     * Get the service that handles requests of the given role.
+     *
+     * @param role The role.
+     * @return The service.
+     */
+    Service getServiceByRole(String role);
 }

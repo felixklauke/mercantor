@@ -34,12 +34,19 @@ public class ServiceModel {
     private final String basePath;
 
     /**
+     * The role of the service.
+     */
+    private final String role;
+
+    /**
      * Create a new model by its base path.
      *
      * @param basePath The base path.
+     * @param role The role.
      */
-    public ServiceModel(String basePath) {
+    public ServiceModel(String basePath, String role) {
         this.basePath = basePath;
+        this.role = role;
     }
 
     /**
@@ -49,5 +56,14 @@ public class ServiceModel {
      */
     public String getBasePath() {
         return basePath;
+    }
+
+    /**
+     * Get the role of the service.
+     *
+     * @return The service.
+     */
+    public String getRole() {
+        return role;
     }
 }

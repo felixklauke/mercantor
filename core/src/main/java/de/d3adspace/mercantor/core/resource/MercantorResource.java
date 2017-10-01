@@ -67,6 +67,24 @@ public class MercantorResource {
     }
 
     @GET
+    @Path("/service/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getServiceByPathQuery(@QueryParam("role") String role) {
+        Service service = mercantor.getServiceByRole(role);
+
+        if (service == null) {
+            return Response.noContent().build();
+        }
+
+        if (service.isBleeding()) {
+            mercantor.removeService(service);
+            return Response.noContent().build();
+        }
+
+        return Response.ok(service).build();
+    }
+
+    @GET
     @Path("/service/{serviceKey}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getServiceByKey(@PathParam("serviceKey") String serviceKey) {
