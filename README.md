@@ -1,7 +1,7 @@
 # mercantor
 A simple but effective network attache service registry used for service discovery in a microservice environment.
 
-Master: 
+Master: <br>
 [![Build Status](https://travis-ci.org/FelixKlauke/mercantor.svg?branch=master)](https://travis-ci.org/FelixKlauke/mercantor)
 
 Dev:    
