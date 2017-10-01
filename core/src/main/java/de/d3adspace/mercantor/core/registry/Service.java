@@ -41,20 +41,31 @@ public class Service {
     private final String basePath;
 
     /**
+     * The role of the service.
+     */
+    private final String role;
+
+    /**
      * The timestamp of the last heart beat.
      */
     private long lastHeartBeat;
+
+    /**
+     * If the service is bleeding.
+     */
     private boolean bleeding;
 
     /**
-     * Create a new service by its unique id and its path.
+     * Create a new service by its unique id, the role and its path.
      *
      * @param uniqueId The unique id.
      * @param basePath The base path.
+     * @param role The role.
      */
-    public Service(UUID uniqueId, String basePath) {
+    public Service(UUID uniqueId, String basePath, String role) {
         this.uniqueId = uniqueId;
         this.basePath = basePath;
+        this.role = role;
 
         updateLastHeartBeat();
     }
@@ -109,5 +120,14 @@ public class Service {
      */
     public void setBleeding(boolean bleeding) {
         this.bleeding = bleeding;
+    }
+
+    /**
+     * Get the role of the service.
+     *
+     * @return The role of the service.
+     */
+    public String getRole() {
+        return role;
     }
 }

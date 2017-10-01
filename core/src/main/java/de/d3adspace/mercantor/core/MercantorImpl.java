@@ -36,6 +36,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -121,7 +122,7 @@ public class MercantorImpl implements IMercantor {
     @Override
     public Service createService(ServiceModel serviceModel) {
         UUID uniqueId = UUID.randomUUID();
-        return new Service(uniqueId, serviceModel.getBasePath());
+        return new Service(uniqueId, serviceModel.getBasePath(), serviceModel.getRole());
     }
 
     @Override
@@ -156,5 +157,10 @@ public class MercantorImpl implements IMercantor {
     @Override
     public void removeService(Service service) {
         ServiceRegistry.removeService(service);
+    }
+
+    @Override
+    public Service getServiceByRole(String role) {
+        return ServiceRegistry.getServices().stream().filter(service -> Objects.equals(service.getRole(), role)).findFirst().orElse(null);
     }
 }
