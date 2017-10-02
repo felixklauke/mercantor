@@ -20,7 +20,7 @@ public class ServiceExpirationCheckerTest {
         checker.run();
 
         // Then
-        Mockito.verify(mercantor, Mockito.times(1)).getServices();
+        Mockito.verify(mercantor).getServices();
         Mockito.verify(mercantor, Mockito.times(mercantor.getServices().size())).checkService(Mockito.any(Service.class));
     }
 }
