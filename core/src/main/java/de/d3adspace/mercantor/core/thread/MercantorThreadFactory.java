@@ -1,5 +1,7 @@
 package de.d3adspace.mercantor.core.thread;
 
+import de.d3adspace.mercantor.core.MercantorConstants;
+
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,7 +25,7 @@ public class MercantorThreadFactory implements ThreadFactory {
     @Override
     public Thread newThread(Runnable r) {
         Thread thread = new Thread(r);
-        thread.setName("Mercantor Service Expiration Thread #" + threadIdCounter.getAndIncrement());
+        thread.setName(MercantorConstants.MERCANTOR_WORKER_THREAD_PREFIX + threadIdCounter.getAndIncrement());
         return thread;
     }
 }
