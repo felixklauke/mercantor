@@ -24,8 +24,6 @@ package de.d3adspace.mercantor.core;
 import de.d3adspace.mercantor.core.config.MercantorConfig;
 import de.d3adspace.mercantor.core.config.MercantorConfigBuilder;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * The factory to create new mercantor instances.
  *
@@ -40,12 +38,12 @@ public class MercantorFactory {
      */
     public static IMercantor createMercantor() {
         return createMercantor(new MercantorConfigBuilder()
-                .setHost("localhost")
-                .setPort(8080)
-                .setServiceExpiration(30)
-                .setServiceExpirationTimeUnit(TimeUnit.SECONDS)
-                .setServiceExpirationCheckInterval(1)
-                .setServiceExpirationCheckIntervalTimeUnit(TimeUnit.SECONDS)
+                .setHost(MercantorConstants.DEFAULT_HOST)
+                .setPort(MercantorConstants.DEFAULT_PORT)
+                .setServiceExpiration(MercantorConstants.DEFAULT_SERVICE_EXPIRATION)
+                .setServiceExpirationTimeUnit(MercantorConstants.DEFAULT_SERVICE_EXPIRATION_TIMEUNIT)
+                .setServiceExpirationCheckInterval(MercantorConstants.DEFAULT_SERVICE_EXPIRATION_CHECK_INTERVAL)
+                .setServiceExpirationCheckIntervalTimeUnit(MercantorConstants.DEFAULT_SERVICE_EXPIRATION_CHECK_INTERVAL_TIMEUNIT)
                 .createMercantorConfig());
     }
 
