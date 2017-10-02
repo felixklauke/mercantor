@@ -28,7 +28,7 @@ public class MercantorThreadFactoryTest {
         mercantorThreadFactory.newThread(runnable);
 
         // Then
-        Mockito.verify(expectedThread, Mockito.times(1)).setName(expectedThreadName);
+        Mockito.verify(expectedThread).setName(expectedThreadName);
         assertEquals(1, atomicInteger.get());
     }
 }
