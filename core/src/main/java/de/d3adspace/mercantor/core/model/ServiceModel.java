@@ -19,21 +19,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.d3adspace.mercantor.core.registry;
-
-import java.util.UUID;
+package de.d3adspace.mercantor.core.model;
 
 /**
- * Represents a service that is known to mercantor.
+ * Represents the model that will be sent by the services.
  *
  * @author Felix 'SasukeKawaii' Klauke
  */
-public class Service {
-
-    /**
-     * The key of the service.
-     */
-    private final UUID uniqueId;
+public class ServiceModel {
 
     /**
      * The base path of the service.
@@ -46,86 +39,29 @@ public class Service {
     private final String role;
 
     /**
-     * The timestamp of the last heart beat.
-     */
-    private long lastHeartBeat;
-
-    /**
-     * If the service is bleeding.
-     */
-    private boolean bleeding;
-
-    /**
-     * Create a new service by its unique id, the role and its path.
+     * Create a new model by its base path.
      *
-     * @param uniqueId The unique id.
      * @param basePath The base path.
      * @param role The role.
      */
-    public Service(UUID uniqueId, String basePath, String role) {
-        this.uniqueId = uniqueId;
+    public ServiceModel(String basePath, String role) {
         this.basePath = basePath;
         this.role = role;
-
-        updateLastHeartBeat();
     }
 
     /**
-     * Get the service key.
+     * Get the base path.
      *
-     * @return The key of the service.
-     */
-    public String getServiceKey() {
-        return uniqueId.toString();
-    }
-
-    /**
-     * Get the base path of the service.
-     *
-     * @return The base path of the service.
+     * @return The base path.
      */
     public String getBasePath() {
         return basePath;
     }
 
     /**
-     * Update the last heart beat.
-     */
-    public void updateLastHeartBeat() {
-        lastHeartBeat = System.currentTimeMillis();
-    }
-
-    /**
-     * Get the time stamp of the last heart beat.
-     *
-     * @return The time stamp of the last heart beat.
-     */
-    public long getLastHeartBeat() {
-        return lastHeartBeat;
-    }
-
-    /**
-     * Check if the service is bleeding.
-     *
-     * @return If the service is bleeding.
-     */
-    public boolean isBleeding() {
-        return bleeding;
-    }
-
-    /**
-     * Update if the server is bleeding.
-     *
-     * @param bleeding If the service is bleeding.
-     */
-    public void setBleeding(boolean bleeding) {
-        this.bleeding = bleeding;
-    }
-
-    /**
      * Get the role of the service.
      *
-     * @return The role of the service.
+     * @return The service.
      */
     public String getRole() {
         return role;

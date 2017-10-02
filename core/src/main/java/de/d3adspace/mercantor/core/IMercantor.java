@@ -21,7 +21,10 @@
 
 package de.d3adspace.mercantor.core;
 
+import de.d3adspace.mercantor.core.model.ServiceModel;
 import de.d3adspace.mercantor.core.registry.Service;
+
+import java.util.Set;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -53,4 +56,72 @@ public interface IMercantor {
      * @param serviceKey The key of the server.
      */
     void removeService(String serviceKey);
+
+    /**
+     * Create a new service by the given data.
+     *
+     * @param content The content of the service.
+     *
+     * @return The created service.
+     */
+    Service createService(String content);
+
+    /**
+     * Create a service by the given model.
+     *
+     * @param serviceModel The model of the service.
+     *
+     * @return The created service.
+     */
+    Service createService(ServiceModel serviceModel);
+
+    /**
+     * Register the given service.
+     *
+     * @param service The service.
+     */
+    void registerService(Service service);
+
+    /**
+     * Update the given service.
+     *
+     * @param serviceKey The service key.
+     */
+    void updateService(String serviceKey);
+
+    /**
+     * Get a set of all active services.
+     *
+     * @return The services.
+     */
+    Set<Service> getServices();
+
+    /**
+     * Check if the given service is expired.
+     *
+     * @param service The service.
+     */
+    void checkService(Service service);
+
+    /**
+     * Mark the given service as bleeding.
+     *
+     * @param service The service.
+     */
+    void markServiceAsBleeding(Service service);
+
+    /**
+     * Remove the given service. Sad.
+     *
+     * @param service The service.
+     */
+    void removeService(Service service);
+
+    /**
+     * Get the service that handles requests of the given role.
+     *
+     * @param role The role.
+     * @return The service.
+     */
+    Service getServiceByRole(String role);
 }

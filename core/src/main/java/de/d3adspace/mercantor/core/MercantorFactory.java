@@ -25,14 +25,34 @@ import de.d3adspace.mercantor.core.config.MercantorConfig;
 import de.d3adspace.mercantor.core.config.MercantorConfigBuilder;
 
 /**
+ * The factory to create new mercantor instances.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class MercantorFactory {
 
+    /**
+     * Create a new mercantor instance by a default config.
+     *
+     * @return The mercantor instance.
+     */
     public static IMercantor createMercantor() {
-        return createMercantor(new MercantorConfigBuilder().setHost("localhost").setPort(8080).createMercantorConfig());
+        return createMercantor(new MercantorConfigBuilder()
+                .setHost(MercantorConstants.DEFAULT_HOST)
+                .setPort(MercantorConstants.DEFAULT_PORT)
+                .setServiceExpiration(MercantorConstants.DEFAULT_SERVICE_EXPIRATION)
+                .setServiceExpirationTimeUnit(MercantorConstants.DEFAULT_SERVICE_EXPIRATION_TIMEUNIT)
+                .setServiceExpirationCheckInterval(MercantorConstants.DEFAULT_SERVICE_EXPIRATION_CHECK_INTERVAL)
+                .setServiceExpirationCheckIntervalTimeUnit(MercantorConstants.DEFAULT_SERVICE_EXPIRATION_CHECK_INTERVAL_TIMEUNIT)
+                .createMercantorConfig());
     }
 
+    /**
+     * Create a new mercantor instance by the given config.
+     *
+     * @param config The config.
+     * @return The mercantor instance.
+     */
     public static IMercantor createMercantor(MercantorConfig config) {
         return new MercantorImpl(config);
     }

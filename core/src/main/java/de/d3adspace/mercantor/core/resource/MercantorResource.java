@@ -26,8 +26,11 @@ import de.d3adspace.mercantor.core.registry.Service;
 import de.d3adspace.mercantor.core.registry.ServiceRegistry;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 /**
  * Resource for Jersey.
@@ -64,6 +67,24 @@ public class MercantorResource {
     }
 
     @GET
+    @Path("/service/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getServiceByPathQuery(@QueryParam("role") String role) {
+        Service service = mercantor.getServiceByRole(role);
+
+        if (service == null) {
+            return Response.noContent().build();
+        }
+
+        if (service.isBleeding()) {
+            mercantor.removeService(service);
+            return Response.noContent().build();
+        }
+
+        return Response.ok(service).build();
+    }
+
+    @GET
     @Path("/service/{serviceKey}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getServiceByKey(@PathParam("serviceKey") String serviceKey) {
@@ -73,6 +94,30 @@ public class MercantorResource {
             return Response.noContent().build();
         }
 
+        if (service.isBleeding()) {
+            mercantor.removeService(service);
+            return Response.noContent().build();
+        }
+
         return Response.ok(service).build();
+    }
+
+    @PUT
+    @Path("/service/{serviceKey}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateService(@PathParam("serviceKey") String serviceKey) {
+        mercantor.updateService(serviceKey);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/service")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerService(@Context UriInfo uriInfo, String content) {
+        Service service = mercantor.createService(content);
+        mercantor.registerService(service);
+
+        return Response.created(URI.create(uriInfo.getPath() + "/" + service.getServiceKey())).build();
     }
 }

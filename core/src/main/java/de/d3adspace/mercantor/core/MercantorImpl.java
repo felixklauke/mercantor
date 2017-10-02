@@ -21,16 +21,26 @@
 
 package de.d3adspace.mercantor.core;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.d3adspace.mercantor.core.config.MercantorConfig;
+import de.d3adspace.mercantor.core.model.ServiceModel;
 import de.d3adspace.mercantor.core.registry.Service;
 import de.d3adspace.mercantor.core.registry.ServiceRegistry;
 import de.d3adspace.mercantor.core.resource.MercantorResource;
+import de.d3adspace.mercantor.core.task.ServiceExpirationChecker;
+import de.d3adspace.mercantor.core.thread.MercantorThreadFactory;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * The default implementation of the {@link IMercantor}.
@@ -50,12 +60,25 @@ public class MercantorImpl implements IMercantor {
     private HttpServer httpServer;
 
     /**
+     * The gson instance used to parse requests.
+     */
+    private final Gson gson;
+
+    /**
+     * The executor service needed to check the expired services.
+     */
+    private final ScheduledExecutorService executorService;
+
+    /**
      * Create a new mercantor impl by the config.
      *
      * @param config The config.
      */
     MercantorImpl(MercantorConfig config) {
         this.config = config;
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
+
+        this.executorService = Executors.newSingleThreadScheduledExecutor(new MercantorThreadFactory());
     }
 
     @Override
@@ -71,6 +94,8 @@ public class MercantorImpl implements IMercantor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        executorService.scheduleAtFixedRate(new ServiceExpirationChecker(this), 0L, config.getServiceExpirationCheckInterval(), config.getServiceExpirationCheckIntervalTimeUnit());
     }
 
     @Override
@@ -86,5 +111,56 @@ public class MercantorImpl implements IMercantor {
     @Override
     public void removeService(String serviceKey) {
         ServiceRegistry.removeService(serviceKey);
+    }
+
+    @Override
+    public Service createService(String content) {
+        ServiceModel serviceModel = gson.fromJson(content, ServiceModel.class);
+        return createService(serviceModel);
+    }
+
+    @Override
+    public Service createService(ServiceModel serviceModel) {
+        UUID uniqueId = UUID.randomUUID();
+        return new Service(uniqueId, serviceModel.getBasePath(), serviceModel.getRole());
+    }
+
+    @Override
+    public void registerService(Service service) {
+        ServiceRegistry.registerService(service.getServiceKey(), service);
+    }
+
+    @Override
+    public void updateService(String serviceKey) {
+        Service service = ServiceRegistry.getService(serviceKey);
+        service.updateLastHeartBeat();
+        service.setBleeding(false);
+    }
+
+    @Override
+    public Set<Service> getServices() {
+        return ServiceRegistry.getServices();
+    }
+
+    @Override
+    public void checkService(Service service) {
+        if (System.currentTimeMillis() - service.getLastHeartBeat() > config.getServiceExpirationTimeUnit().toMillis(config.getServiceExpiration())) {
+            markServiceAsBleeding(service);
+        }
+    }
+
+    @Override
+    public void markServiceAsBleeding(Service service) {
+        service.setBleeding(true);
+    }
+
+    @Override
+    public void removeService(Service service) {
+        ServiceRegistry.removeService(service);
+    }
+
+    @Override
+    public Service getServiceByRole(String role) {
+        return ServiceRegistry.getServices().stream().filter(service -> Objects.equals(service.getRole(), role)).findFirst().orElse(null);
     }
 }
