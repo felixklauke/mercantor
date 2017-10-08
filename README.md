@@ -25,7 +25,11 @@ Body:
 Reponse:
 ```json
 {
-  "serviceKey": "someId"
+  "serviceKey": "someId",
+  "basePath": "http://api.example.com",
+  "role": "sudoku-resolver",
+  "serviceExpiration": 42,
+  "serviceExpirationTimeUnit": "SECONDS"  
 }
 ```
 
@@ -40,12 +44,6 @@ Method / URL: `DELETE $BASE_URL/service/{serviceKey}`
 **Querying a service**
 
 Method / URL: `GET $BASE_URL/service/{role}`
-
-```json
-{
-  "basePath": "http://api.example.com"
-}
-```
 
 # Usage
 - Install [Maven](http://maven.apache.org/download.cgi)
