@@ -1,5 +1,5 @@
 # mercantor
-A simple but effective network attache service registry used for service discovery in a microservice environment.
+A simple but effective network attached service registry used for service discovery in a microservice environment.
 
 Master: 
 
