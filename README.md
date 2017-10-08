@@ -104,6 +104,29 @@ MercantorClientConfig mercantorClientConfig = new MercantorClientConfigBuilder()
 IMercantorClient mercantorClient = MercantorClientFactory.createMercantorClient(mercantorClientConfig);
 ```
 
+Registering a new service: 
+```java
+mercantorClient.registerService("http://localhost", "boss");
+```
+
+Removing a service: 
+```java
+IService service = ...;
+
+mercantorClient.removeService(service);
+```
+
+Querying a service:
+```java
+ListenableFuture<IService> boss = mercantorClient.getService("boss");
+
+try {
+    IService service = boss.get();
+} catch (InterruptedException | ExecutionException e) {
+    e.printStackTrace();
+ }
+```
+
 # How does this work?
 Mercanot is built on a REST base. Whenever a service starts it has to register itself with a POST Request against mercantor. Mercantor
 will assign a unique id to the service and hold it as a available service. In an internval of 30 seconds a service has to send a heartbeat
