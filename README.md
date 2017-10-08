@@ -12,12 +12,12 @@ Dev:
 # API Docmentation
 **Creating a new service**
 
-Method / URL: `POST $BASE_URL/v1/service`
+Method / URL: `POST $BASE_URL/service`
 
 Body:
 ```json
 {
-  "basePath": "http://api.example.com/v1",
+  "basePath": "http://api.example.com",
   "role": "sudoku-resolver"
 }
 ```
@@ -31,19 +31,19 @@ Reponse:
 
 **Updating a service / Sending a Heartbeat**
 
-Method / URL: `PUT $BASE_URL/v1/service/{serviceKey}`
+Method / URL: `PUT $BASE_URL/service/{serviceKey}`
 
 **Removing a service** 
 
-Method / URL: `DELETE $BASE_URL/v1/service/{serviceKey}`
+Method / URL: `DELETE $BASE_URL/service/{serviceKey}`
 
 **Querying a service**
 
-Method / URL: `GET $BASE_URL/v1/service?role={role}`
+Method / URL: `GET $BASE_URL/service/{role}`
 
 ```json
 {
-  "basePath": "http://api.example.com/v1"
+  "basePath": "http://api.example.com"
 }
 ```
 
@@ -54,28 +54,46 @@ Method / URL: `GET $BASE_URL/v1/service?role={role}`
 
 **Maven dependencies**
 
-_Mercantor:_
+_Mercantor Server:_
 ```xml
 <dependency>
     <groupId>de.d3adspace</groupId>
-    <artifactId>mercantor-core</artifactId>
+    <artifactId>mercantor-server</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
+_Mercantor Client:_
+```xml
+<dependency>
+    <groupId>de.d3adspace</groupId>
+    <artifactId>mercantor-client</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
 
 # Example
+Server:
 ```java
-MercantorConfig mercantorConfig = new MercantorConfigBuilder()
+MercantorServerConfig mercantorServerConfig = new MercantorServerConfigBuilder()
         .setHost("127.0.0.1")
         .setPort(8081)
         .setServiceExpiration(30)
         .setServiceExpirationTimeUnit(TimeUnit.SECONDS)
-        .setServiceExpirationCheckInterval(1)
-        .setServiceExpirationCheckIntervalTimeUnit(TimeUnit.SECONDS)
-        .createMercantorConfig();
+        .createMercantorServerConfig();
         
-IMercantor mercantor = MercantorFactory.createMercantor(mercantorConfig);
-mercantor.start();
+IMercantorServer mercantorServer = MercantorServerFactory.createMercantorServer(mercantorServerConfig);
+mercantorServer.start();
+```
+
+Client: 
+```java
+MercantorClientConfig mercantorClientConfig = new MercantorClientConfigBuilder()
+        .setServerHost("127.0.0.1")
+        .setServerPort(8081)
+        .createMercantorClientConfig();
+        
+IMercantorClient mercantorClient = MercantorClientFactory.createMercantorClient(mercantorClientConfig);
 ```
 
 # How does this work?
