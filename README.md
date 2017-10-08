@@ -45,6 +45,16 @@ Method / URL: `DELETE $BASE_URL/service/{serviceKey}`
 
 Method / URL: `GET $BASE_URL/service/{role}`
 
+```json
+{
+  "serviceKey": "someId",
+  "basePath": "http://api.example.com",
+  "role": "sudoku-resolver",
+  "serviceExpiration": 42,
+  "serviceExpirationTimeUnit": "SECONDS"  
+}
+```
+
 # Usage
 - Install [Maven](http://maven.apache.org/download.cgi)
 - Clone this repo
