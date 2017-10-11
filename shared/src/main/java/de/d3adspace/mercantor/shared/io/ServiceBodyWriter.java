@@ -16,12 +16,17 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 /**
+ * Jersey body reader capable of serializing a service object into an http body.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceBodyWriter implements MessageBodyWriter<IService> {
 
+    /**
+     * Gson instance used for serialization.
+     */
     private final Gson gson;
 
     @Inject

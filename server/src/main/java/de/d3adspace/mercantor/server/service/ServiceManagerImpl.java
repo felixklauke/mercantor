@@ -15,16 +15,35 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
+ * Default implementation of the {@link IServiceManager}.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 public class ServiceManagerImpl implements IServiceManager {
 
+    /**
+     * The logger to log all actions.
+     */
     private final Logger logger = LoggerFactory.getLogger(ServiceManagerImpl.class);
 
+    /**
+     * All known services keyed by the role.
+     */
     private final Map<String, IService> serviceByRole;
+
+    /**
+     * All known services keyed by their unique od.
+     */
     private final Map<String, IService> serviceByKey;
+
+    /**
+     * All known services with their heart beats.
+     */
     private final Map<IService, Long> serviceHeartbeats;
 
+    /**
+     * The underlying config.
+     */
     private final MercantorServerConfig mercantorServerConfig;
 
     @Inject
@@ -37,6 +56,9 @@ public class ServiceManagerImpl implements IServiceManager {
         startCheckDeadServicesTask();
     }
 
+    /**
+     * Start the task that will mark dead services.
+     */
     private void startCheckDeadServicesTask() {
         ScheduledExecutorService executorService = Executors
                 .newSingleThreadScheduledExecutor(new PrefixedThreadFactory(MercantorServerConstants.WORKER_THREAD_PREFIX));

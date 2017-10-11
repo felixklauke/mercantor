@@ -19,12 +19,17 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 /**
+ * Jersey body read that is capoble of deserializing a service object from an http body.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
 public class ServiceBodyReader implements MessageBodyReader<IService> {
 
+    /**
+     * Gson instance used for deserialization.
+     */
     private final Gson gson;
 
     @Inject

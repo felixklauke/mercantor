@@ -12,12 +12,21 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 
 /**
+ * The jersey resource used for the RESTful service.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 @Path("")
 public class MercantorResource {
 
+    /**
+     * The underlying config.
+     */
     private final MercantorServerConfig mercantorServerConfig;
+
+    /**
+     * The manager to handle services.
+     */
     private final IServiceManager serviceManager;
 
     @Inject

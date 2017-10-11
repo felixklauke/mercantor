@@ -11,12 +11,22 @@ import de.d3adspace.mercantor.shared.io.ServiceBodyReader;
 import de.d3adspace.mercantor.shared.io.ServiceBodyWriter;
 
 /**
+ * The dependency injection module.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 public class MercantorServerModule extends AbstractModule {
 
+    /**
+     * The underlying config.
+     */
     private final MercantorServerConfig mercantorServerConfig;
 
+    /**
+     * Create a new module by its underlying server config.
+     *
+     * @param mercantorServerConfig The config.
+     */
     public MercantorServerModule(MercantorServerConfig mercantorServerConfig) {
         this.mercantorServerConfig = mercantorServerConfig;
     }

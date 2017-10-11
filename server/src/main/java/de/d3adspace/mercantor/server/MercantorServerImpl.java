@@ -16,11 +16,20 @@ import java.io.IOException;
 import java.net.URI;
 
 /**
+ * Default implementation of the {@link IMercantorServer}.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 public class MercantorServerImpl implements IMercantorServer {
 
+    /**
+     * The underlying config.
+     */
     private final MercantorServerConfig mercantorServerConfig;
+
+    /**
+     * The jersey server used for rest communication.
+     */
     private HttpServer httpServer;
 
     @Inject
@@ -32,6 +41,11 @@ public class MercantorServerImpl implements IMercantorServer {
     @Inject
     private ServiceBodyWriter serviceBodyWriter;
 
+    /**
+     * Create a new server by its underlying config.
+     *
+     * @param mercantorServerConfig The config.
+     */
     MercantorServerImpl(MercantorServerConfig mercantorServerConfig) {
         this.mercantorServerConfig = mercantorServerConfig;
 

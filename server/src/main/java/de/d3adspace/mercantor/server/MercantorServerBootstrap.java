@@ -1,6 +1,8 @@
 package de.d3adspace.mercantor.server;
 
 /**
+ * Main class of the whole server.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 public class MercantorServerBootstrap {
