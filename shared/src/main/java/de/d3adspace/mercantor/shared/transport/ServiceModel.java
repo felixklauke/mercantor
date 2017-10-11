@@ -48,6 +48,11 @@ public class ServiceModel implements IService {
     }
 
     @Override
+    public void setServiceKey(UUID serviceKey) {
+        this.serviceKey = serviceKey;
+    }
+
+    @Override
     public String getRole() {
         return role;
     }
