@@ -16,16 +16,30 @@ import javax.inject.Inject;
 import java.util.concurrent.Executors;
 
 /**
+ * The default implementation of the {@link IMercantorClient}.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 public class MercantorClientImpl implements IMercantorClient {
 
+    /**
+     * The logger to log all actions.
+     */
     private final Logger logger;
+
+    /**
+     * The executor service needed to create the async operations.
+     */
     private final ListeningScheduledExecutorService executorService;
 
     @Inject
     private IServiceManager serviceManager;
 
+    /**
+     * Create a new client by its config. Used by the {@link MercantorClientFactory}.
+     *
+     * @param mercantorClientConfig The underlying config.
+     */
     MercantorClientImpl(MercantorClientConfig mercantorClientConfig) {
         this.logger = LoggerFactory.getLogger(MercantorClientImpl.class);
         this.executorService = MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(4, new PrefixedThreadFactory(MercantorClientConstants.WORKER_THREAD_PREFIX)));
@@ -33,6 +47,7 @@ public class MercantorClientImpl implements IMercantorClient {
         injector.injectMembers(this);
     }
 
+    @Override
     public ListenableFuture<IService> registerService(final String basePath, final String role) {
         ListenableFuture<IService> serviceFuture = executorService.submit(() -> serviceManager.registerService(basePath, role));
 
@@ -40,6 +55,11 @@ public class MercantorClientImpl implements IMercantorClient {
         return serviceFuture;
     }
 
+    /**
+     * Register the default callback for the logging of registering a service.
+     *
+     * @param serviceFuture The future of the registration.
+     */
     private void registerRegisteringCallback(ListenableFuture<IService> serviceFuture) {
         Futures.addCallback(serviceFuture, new FutureCallback<IService>() {
             public void onSuccess(@Nullable IService service) {
@@ -52,6 +72,7 @@ public class MercantorClientImpl implements IMercantorClient {
         });
     }
 
+    @Override
     public ListenableFuture<Boolean> unregisterService(final IService service) {
         ListenableFuture<Boolean> serviceFuture = executorService.submit(() -> serviceManager.removeService(service));
 
@@ -67,6 +88,11 @@ public class MercantorClientImpl implements IMercantorClient {
         return serviceFuture;
     }
 
+    /**
+     * Register the default callback for the logging of the fetching of a service.
+     *
+     * @param serviceFuture The future of the fetching.
+     */
     private void registerFetchingCallback(ListenableFuture<IService> serviceFuture, final String role) {
         Futures.addCallback(serviceFuture, new FutureCallback<IService>() {
             @Override
@@ -85,6 +111,11 @@ public class MercantorClientImpl implements IMercantorClient {
         });
     }
 
+    /**
+     * Register the default callback for the logging of the removal of a service.
+     *
+     * @param serviceFuture The future of the removal.
+     */
     private void registerUnregisteringCallback(ListenableFuture<Boolean> serviceFuture, final IService service) {
         Futures.addCallback(serviceFuture, new FutureCallback<Boolean>() {
             public void onSuccess(@Nullable Boolean success) {

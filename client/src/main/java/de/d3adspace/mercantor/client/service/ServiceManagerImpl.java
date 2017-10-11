@@ -28,19 +28,45 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Default implementation of the {@link IServiceManager}.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 public class ServiceManagerImpl implements IServiceManager {
 
+    /**
+     * The logger to log all actions.
+     */
     private final Logger logger = LoggerFactory.getLogger(ServiceManagerImpl.class);
 
+    /**
+     * The weg target that will be used to register a new service.
+     */
     private final WebTarget targetRegister;
+
+    /**
+     * The web target that will be used to update a service via sending a heartbeat.
+     */
     private final WebTarget targetUpdate;
+
+    /**
+     * The web target that will be used to unregister a service.
+     */
     private final WebTarget targetRemove;
+
+    /**
+     * The web target that will be used to query for a service.
+     */
     private final WebTarget targetGetByRole;
 
+    /**
+     * The executor service for the service heart beating tasks.
+     */
     private final ScheduledExecutorService executorService;
 
+    /**
+     * The futures that represent the updating tasks.
+     */
     private final Map<IService, Future> currentRegisteredServices;
 
     @Inject
@@ -66,6 +92,12 @@ public class ServiceManagerImpl implements IServiceManager {
         return registerService(Entity.json(service));
     }
 
+    /**
+     * Register a service that is serialized in the given entity.
+     *
+     * @param entity The entity.
+     * @return The registered service.
+     */
     private IService registerService(Entity entity) {
         Response response = targetRegister.request(MediaType.APPLICATION_JSON).post(entity);
         ExtendedServiceModel serviceModel = (ExtendedServiceModel) response.readEntity(IService.class);
@@ -79,6 +111,15 @@ public class ServiceManagerImpl implements IServiceManager {
         return serviceModel;
     }
 
+    /**
+     * Start the task that will send heartbets.
+     *
+     * @param serviceModel The service to update.
+     * @param expiration The interval of sending heartbeats.
+     * @param expirationTimeUnit The time unit of the expiration time.
+     *
+     * @return The future of the updating tasks.
+     */
     private Future<?> startRefreshingService(final IService serviceModel, long expiration, TimeUnit expirationTimeUnit) {
         logger.info("Starting refreshing service with key {} with {}{}", serviceModel.getServiceKey(), expiration, expirationTimeUnit.toString());
 
@@ -105,6 +146,11 @@ public class ServiceManagerImpl implements IServiceManager {
         return response.readEntity(IService.class);
     }
 
+    /**
+     * Send a heartbeat for the given service.
+     *
+     * @param service The service.
+     */
     private void updateService(IService service) {
         logger.info("Updating service with key {} at {} for role {}.", service.getServiceKey(), service.getBasePath(), service.getRole());
 

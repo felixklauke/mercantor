@@ -4,10 +4,17 @@ import de.d3adspace.mercantor.client.config.MercantorClientConfig;
 import de.d3adspace.mercantor.client.config.MercantorClientConfigBuilder;
 
 /**
+ * Create new instances of the client.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 public class MercantorClientFactory {
 
+    /**
+     * Create a new client with a default config.
+     *
+     * @return The client.
+     */
     public static IMercantorClient createMercantorClient() {
         MercantorClientConfig mercantorClientConfig = new MercantorClientConfigBuilder()
                 .setServerHost(MercantorClientConstants.DEFAULT_SERVER_HOST)
@@ -17,6 +24,12 @@ public class MercantorClientFactory {
         return createMercantorClient(mercantorClientConfig);
     }
 
+    /**
+     * Create a new client by the given config.
+     *
+     * @param mercantorClientConfig The config.
+     * @return The client.
+     */
     public static IMercantorClient createMercantorClient(MercantorClientConfig mercantorClientConfig) {
         return new MercantorClientImpl(mercantorClientConfig);
     }
