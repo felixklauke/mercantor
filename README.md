@@ -45,6 +45,16 @@ Method / URL: `DELETE $BASE_URL/service/{serviceKey}`
 
 Method / URL: `GET $BASE_URL/service/{role}`
 
+```json
+{
+  "serviceKey": "someId",
+  "basePath": "http://api.example.com",
+  "role": "sudoku-resolver",
+  "serviceExpiration": 42,
+  "serviceExpirationTimeUnit": "SECONDS"  
+}
+```
+
 # Usage
 - Install [Maven](http://maven.apache.org/download.cgi)
 - Clone this repo
@@ -92,6 +102,29 @@ MercantorClientConfig mercantorClientConfig = new MercantorClientConfigBuilder()
         .createMercantorClientConfig();
         
 IMercantorClient mercantorClient = MercantorClientFactory.createMercantorClient(mercantorClientConfig);
+```
+
+Registering a new service: 
+```java
+mercantorClient.registerService("http://localhost", "boss");
+```
+
+Removing a service: 
+```java
+IService service = ...;
+
+mercantorClient.removeService(service);
+```
+
+Querying a service:
+```java
+ListenableFuture<IService> boss = mercantorClient.getService("boss");
+
+try {
+    IService service = boss.get();
+} catch (InterruptedException | ExecutionException e) {
+    e.printStackTrace();
+ }
 ```
 
 # How does this work?
