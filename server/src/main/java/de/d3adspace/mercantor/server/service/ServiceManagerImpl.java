@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -93,6 +94,8 @@ public class ServiceManagerImpl implements IServiceManager {
     @Override
     public void registerService(IService service) {
         logger.info("Registering service at {} for role {} with key {}.", service.getBasePath(), service.getRole(), service.getServiceKey());
+
+        service.setServiceKey(UUID.randomUUID());
 
         serviceByRole.put(service.getRole(), service);
         serviceByKey.put(service.getServiceKey().toString(), service);
