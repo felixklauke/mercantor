@@ -11,5 +11,5 @@ public class MercantorClientConstants {
 
     public static final String WORKER_THREAD_PREFIX = "Mercantor Client Worker #";
 
-    public static final String SERVICE_THREAD_PREFIX = "Mercantor Service Worker #";
+    public static final String SERVICE_THREAD_PREFIX = "Mercantor Service Updating Worker #";
 }
