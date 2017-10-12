@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 /**
+ * Dependency Injection Provider for the {@link IServiceRepository}.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 public class ServiceRepositoryProvider implements Provider<IServiceRepository> {

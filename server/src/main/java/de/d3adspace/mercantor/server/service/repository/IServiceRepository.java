@@ -3,6 +3,8 @@ package de.d3adspace.mercantor.server.service.repository;
 import de.d3adspace.mercantor.shared.transport.IService;
 
 /**
+ * The repository that saves all known services.
+ *
  * @author Felix Klauke <fklauke@itemis.de>
  */
 public interface IServiceRepository {
