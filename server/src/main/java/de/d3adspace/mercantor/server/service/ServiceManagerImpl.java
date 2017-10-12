@@ -3,6 +3,7 @@ package de.d3adspace.mercantor.server.service;
 import com.google.common.collect.Maps;
 import de.d3adspace.mercantor.server.MercantorServerConstants;
 import de.d3adspace.mercantor.server.config.MercantorServerConfig;
+import de.d3adspace.mercantor.server.service.repository.IServiceRepository;
 import de.d3adspace.mercantor.shared.thread.PrefixedThreadFactory;
 import de.d3adspace.mercantor.shared.transport.ExtendedServiceModel;
 import de.d3adspace.mercantor.shared.transport.IService;
@@ -43,12 +44,18 @@ public class ServiceManagerImpl implements IServiceManager {
     private final Map<IService, Long> serviceHeartbeats;
 
     /**
+     * The repository the services are saved in.
+     */
+    private final IServiceRepository serviceRepository;
+
+    /**
      * The underlying config.
      */
     private final MercantorServerConfig mercantorServerConfig;
 
     @Inject
-    public ServiceManagerImpl(MercantorServerConfig mercantorServerConfig) {
+    public ServiceManagerImpl(IServiceRepository serviceRepository, MercantorServerConfig mercantorServerConfig) {
+        this.serviceRepository = serviceRepository;
         this.mercantorServerConfig = mercantorServerConfig;
         this.serviceByRole = Maps.newHashMap();
         this.serviceByKey = Maps.newHashMap();
@@ -82,13 +89,7 @@ public class ServiceManagerImpl implements IServiceManager {
     public IService getService(String role) {
         logger.info("Getting service for role {}.", role);
 
-        IService service = serviceByRole.get(role);
-
-        if (service == null) {
-            return null;
-        }
-
-        return service;
+        return serviceRepository.getServiceByRole(role);
     }
 
     @Override
@@ -97,8 +98,8 @@ public class ServiceManagerImpl implements IServiceManager {
 
         service.setServiceKey(UUID.randomUUID());
 
-        serviceByRole.put(service.getRole(), service);
-        serviceByKey.put(service.getServiceKey().toString(), service);
+        serviceRepository.registerService(service);
+
         serviceHeartbeats.put(service, System.currentTimeMillis());
 
         if (service instanceof ExtendedServiceModel) {
@@ -118,10 +119,9 @@ public class ServiceManagerImpl implements IServiceManager {
     public void removeService(String serviceKey) {
         logger.info("Removing service {}.", serviceKey);
 
-        IService service = serviceByKey.get(serviceKey);
+        IService service = serviceRepository.getServiceByKey(serviceKey);
 
-        serviceByRole.remove(service.getRole());
-        serviceByKey.remove(serviceKey);
+        serviceRepository.removeService(service);
         serviceHeartbeats.remove(service);
     }
 }

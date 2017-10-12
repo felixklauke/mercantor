@@ -1,5 +1,7 @@
 package de.d3adspace.mercantor.server.config;
 
+import de.d3adspace.mercantor.server.service.repository.mode.ServiceLookupMode;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,18 +32,25 @@ public class MercantorServerConfig {
     private final TimeUnit serviceExpirationTimeUnit;
 
     /**
+     * The mode how the services will be lookup up their role.
+     */
+    private final ServiceLookupMode serviceLookupMode;
+
+    /**
      * Create a new server config by all its data. Mainly used by the {@link MercantorServerConfigBuilder}.
      *
      * @param host                      The host of the server.
      * @param port                      The port of the server.
      * @param serviceExpiration         The expiration period of the services.
      * @param serviceExpirationTimeUnit The time unit of the expiration.
+     * @param serviceLookupMode The mode how the services will be lookup up their role.
      */
-    public MercantorServerConfig(String host, int port, long serviceExpiration, TimeUnit serviceExpirationTimeUnit) {
+    public MercantorServerConfig(String host, int port, long serviceExpiration, TimeUnit serviceExpirationTimeUnit, ServiceLookupMode serviceLookupMode) {
         this.host = host;
         this.port = port;
         this.serviceExpiration = serviceExpiration;
         this.serviceExpirationTimeUnit = serviceExpirationTimeUnit;
+        this.serviceLookupMode = serviceLookupMode;
     }
 
     /**
@@ -80,6 +89,15 @@ public class MercantorServerConfig {
         return host;
     }
 
+    /**
+     * Get the mode how the services will be lookup up their role.
+     *
+     * @return The mode how the services will be lookup up their role.
+     */
+    public ServiceLookupMode getServiceLookupMode() {
+        return serviceLookupMode;
+    }
+
     @Override
     public String toString() {
         return "MercantorServerConfig{" +
@@ -87,6 +105,7 @@ public class MercantorServerConfig {
                 ", port=" + port +
                 ", serviceExpiration=" + serviceExpiration +
                 ", serviceExpirationTimeUnit=" + serviceExpirationTimeUnit +
+                ", serviceLookupMode=" + serviceLookupMode +
                 '}';
     }
 }
