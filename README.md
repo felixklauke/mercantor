@@ -1,5 +1,5 @@
 # mercantor
-A simple but effective network attache service registry used for service discovery in a microservice environment.
+A simple but effective network attached service registry with load balancing capabilities used for service discovery in a microservice environment.
 
 Master: 
 
@@ -9,44 +9,6 @@ Dev:
 
 [![Build Status](https://travis-ci.org/FelixKlauke/mercantor.svg?branch=dev)](https://travis-ci.org/FelixKlauke/mercantor)
 
-# API Docmentation
-**Creating a new service**
-
-Method / URL: `POST $BASE_URL/v1/service`
-
-Body:
-```json
-{
-  "basePath": "http://api.example.com/v1",
-  "role": "sudoku-resolver"
-}
-```
-
-Reponse:
-```json
-{
-  "serviceKey": "someId"
-}
-```
-
-**Updating a service / Sending a Heartbeat**
-
-Method / URL: `PUT $BASE_URL/v1/service/{serviceKey}`
-
-**Removing a service** 
-
-Method / URL: `DELETE $BASE_URL/v1/service/{serviceKey}`
-
-**Querying a service**
-
-Method / URL: `GET $BASE_URL/v1/service?role={role}`
-
-```json
-{
-  "basePath": "http://api.example.com/v1"
-}
-```
-
 # Usage
 - Install [Maven](http://maven.apache.org/download.cgi)
 - Clone this repo
@@ -54,32 +16,132 @@ Method / URL: `GET $BASE_URL/v1/service?role={role}`
 
 **Maven dependencies**
 
-_Mercantor:_
+_Mercantor Server:_
 ```xml
 <dependency>
     <groupId>de.d3adspace</groupId>
-    <artifactId>mercantor-core</artifactId>
+    <artifactId>mercantor-server</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
 
+_Mercantor Client:_
+```xml
+<dependency>
+    <groupId>de.d3adspace</groupId>
+    <artifactId>mercantor-client</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
+# API Docmentation
+**Creating a new service**
+
+Method / URL: `POST $BASE_URL/service`
+
+Body:
+```json
+{
+  "basePath": "http://api.example.com",
+  "role": "sudoku-resolver"
+}
+```
+
+Reponse:
+```json
+{
+  "serviceKey": "someId",
+  "basePath": "http://api.example.com",
+  "role": "sudoku-resolver",
+  "serviceExpiration": 42,
+  "serviceExpirationTimeUnit": "SECONDS"  
+}
+```
+
+**Updating a service / Sending a Heartbeat**
+
+Method / URL: `PUT $BASE_URL/service/{serviceKey}`
+
+**Removing a service** 
+
+Method / URL: `DELETE $BASE_URL/service/{serviceKey}`
+
+**Querying a service**
+
+Method / URL: `GET $BASE_URL/service/{role}`
+
+```json
+{
+  "serviceKey": "someId",
+  "basePath": "http://api.example.com",
+  "role": "sudoku-resolver",
+  "serviceExpiration": 42,
+  "serviceExpirationTimeUnit": "SECONDS"  
+}
+```
+
+# Load Balancing
+The internal service registry of the server is capable of two different modes to lookup services you registered by their role:
+- Random
+- Round Robin
+
+_Random:_ The query will return a random known service with the given role. If you have four known services for the same role the query will return (Example) [s0, s2, s0, s3, s1, s0, s3, s4...]
+
+_Round Robin:_ The query will return one service after another. If you have 4 known services for the same role the query will return [s0, s1, s2, s3, s0, s1, s2...] 
+
 # Example
+Server:
 ```java
-MercantorConfig mercantorConfig = new MercantorConfigBuilder()
+MercantorServerConfig mercantorServerConfig = new MercantorServerConfigBuilder()
         .setHost("127.0.0.1")
         .setPort(8081)
         .setServiceExpiration(30)
         .setServiceExpirationTimeUnit(TimeUnit.SECONDS)
-        .setServiceExpirationCheckInterval(1)
-        .setServiceExpirationCheckIntervalTimeUnit(TimeUnit.SECONDS)
-        .createMercantorConfig();
+        .setServiceLookupMode(ServiceLookupMode.RANDOM)
+        .createMercantorServerConfig();
         
-IMercantor mercantor = MercantorFactory.createMercantor(mercantorConfig);
-mercantor.start();
+IMercantorServer mercantorServer = MercantorServerFactory.createMercantorServer(mercantorServerConfig);
+mercantorServer.start();
+```
+
+Client: 
+```java
+MercantorClientConfig mercantorClientConfig = new MercantorClientConfigBuilder()
+        .setServerHost("127.0.0.1")
+        .setServerPort(8081)
+        .createMercantorClientConfig();
+        
+IMercantorClient mercantorClient = MercantorClientFactory.createMercantorClient(mercantorClientConfig);
+```
+
+Registering a new service: 
+```java
+mercantorClient.registerService("http://localhost", "boss");
+```
+
+Removing a service: 
+```java
+IService service = ...;
+
+mercantorClient.removeService(service);
+```
+
+Querying a service:
+```java
+ListenableFuture<IService> boss = mercantorClient.getService("boss");
+
+try {
+    IService service = boss.get();
+} catch (InterruptedException | ExecutionException e) {
+    e.printStackTrace();
+ }
 ```
 
 # How does this work?
-Mercanot is built on a REST base. Whenever a service starts it has to register itself with a POST Request against mercantor. Mercantor
-will assign a unique id to the service and hold it as a available service. In an internval of 30 seconds a service has to send a heartbeat
-to a service. If no heartbeat is sent the service will be makred as "bleeding" will be removed when the next request against the server 
-fails.
+All Services will have to register themselves using the client API. The server will be configured
+with an expiration time for all registered services. When the client registers a service the server 
+will deliver some information containing the expiration for the service and the model that represents the service.
+
+When the server returned the register information for the client he will monitor
+the clients heartbeats that should be sent in the window of the expiration interval. If a client doesn't send
+a heartbeat in time the server will forget him.
