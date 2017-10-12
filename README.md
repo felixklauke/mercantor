@@ -142,6 +142,8 @@ All Services will have to register themselves using the client API. The server w
 with an expiration time for all registered services. When the client registers a service the server 
 will deliver some information containing the expiration for the service and the model that represents the service.
 
+The server will check for bleeding services every 1 second.
+
 When the server returned the register information for the client he will monitor
 the clients heartbeats that should be sent in the window of the expiration interval. If a client doesn't send
 a heartbeat in time the server will forget him.
