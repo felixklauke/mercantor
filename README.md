@@ -128,7 +128,10 @@ try {
 ```
 
 # How does this work?
-Mercanot is built on a REST base. Whenever a service starts it has to register itself with a POST Request against mercantor. Mercantor
-will assign a unique id to the service and hold it as a available service. In an internval of 30 seconds a service has to send a heartbeat
-to a service. If no heartbeat is sent the service will be makred as "bleeding" will be removed when the next request against the server 
-fails.
+All Services will have to register themselves using the client API. The server will be configured
+with an expiration time for all registered services. When the client registers a service the server 
+will deliver some information containing the expiration for the service and the model that represents the service.
+
+When the server returned the register information for the client he will monitor
+the clients heartbeats that should be sent in the window of the expiration interval. If a client doesn't send
+a heartbeat in time the server will forget him.
