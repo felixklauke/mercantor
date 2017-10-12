@@ -1,5 +1,7 @@
 package de.d3adspace.mercantor.server;
 
+import de.d3adspace.mercantor.server.service.repository.mode.ServiceLookupMode;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,6 +30,11 @@ public class MercantorServerConstants {
      * The default time unit of the expiration.
      */
     public static final TimeUnit DEFAULT_SERVICE_EXPIRATION_TIMEUNIT = TimeUnit.SECONDS;
+
+    /**
+     * The default lookup mode for services.
+     */
+    public static final ServiceLookupMode DEFAULT_SERVICE_LOOKUP_MODE = ServiceLookupMode.RANDOM;
 
     /**
      * The prefix for the thread names of the worker threads.

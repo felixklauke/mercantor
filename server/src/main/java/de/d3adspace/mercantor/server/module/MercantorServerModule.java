@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.AbstractModule;
 import de.d3adspace.mercantor.server.config.MercantorServerConfig;
+import de.d3adspace.mercantor.server.provider.ServiceRepositoryProvider;
 import de.d3adspace.mercantor.server.resource.MercantorResource;
 import de.d3adspace.mercantor.server.service.IServiceManager;
 import de.d3adspace.mercantor.server.service.ServiceManagerImpl;
+import de.d3adspace.mercantor.server.service.repository.IServiceRepository;
 import de.d3adspace.mercantor.shared.io.ServiceBodyReader;
 import de.d3adspace.mercantor.shared.io.ServiceBodyWriter;
 
@@ -38,6 +40,8 @@ public class MercantorServerModule extends AbstractModule {
         bind(ServiceBodyWriter.class);
         bind(ServiceBodyReader.class);
         bind(MercantorResource.class);
+
+        bind(IServiceRepository.class).toProvider(ServiceRepositoryProvider.class);
         bind(IServiceManager.class).to(ServiceManagerImpl.class);
     }
 }

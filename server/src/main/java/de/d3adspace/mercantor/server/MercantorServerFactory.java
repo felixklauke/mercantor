@@ -30,6 +30,7 @@ public class MercantorServerFactory {
                 .setPort(MercantorServerConstants.DEFAULT_SERVER_PORT)
                 .setServiceExpiration(MercantorServerConstants.DEFAULT_SERVICE_EXPIRATION)
                 .setServiceExpirationTimeUnit(MercantorServerConstants.DEFAULT_SERVICE_EXPIRATION_TIMEUNIT)
+                .setServiceLookupMode(MercantorServerConstants.DEFAULT_SERVICE_LOOKUP_MODE)
                 .createMercantorServerConfig();
 
         return createMercantorServer(mercantorServerConfig);

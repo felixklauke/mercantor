@@ -1,5 +1,7 @@
 package de.d3adspace.mercantor.server.config;
 
+import de.d3adspace.mercantor.server.service.repository.mode.ServiceLookupMode;
+
 import java.util.concurrent.TimeUnit;
 
 public class MercantorServerConfigBuilder {
@@ -7,6 +9,7 @@ public class MercantorServerConfigBuilder {
     private int port;
     private long serviceExpiration;
     private TimeUnit serviceExpirationTimeUnit;
+    private ServiceLookupMode serviceLookupMode;
 
     public MercantorServerConfigBuilder setHost(String host) {
         this.host = host;
@@ -28,7 +31,12 @@ public class MercantorServerConfigBuilder {
         return this;
     }
 
+    public MercantorServerConfigBuilder setServiceLookupMode(ServiceLookupMode serviceLookupMode) {
+        this.serviceLookupMode = serviceLookupMode;
+        return this;
+    }
+
     public MercantorServerConfig createMercantorServerConfig() {
-        return new MercantorServerConfig(host, port, serviceExpiration, serviceExpirationTimeUnit);
+        return new MercantorServerConfig(host, port, serviceExpiration, serviceExpirationTimeUnit, serviceLookupMode);
     }
 }
