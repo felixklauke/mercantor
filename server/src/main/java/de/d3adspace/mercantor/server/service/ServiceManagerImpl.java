@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Default implementation of the {@link IServiceManager}.
@@ -29,19 +30,9 @@ public class ServiceManagerImpl implements IServiceManager {
     private final Logger logger = LoggerFactory.getLogger(ServiceManagerImpl.class);
 
     /**
-     * All known services keyed by the role.
-     */
-    private final Map<String, IService> serviceByRole;
-
-    /**
-     * All known services keyed by their unique od.
-     */
-    private final Map<String, IService> serviceByKey;
-
-    /**
      * All known services with their heart beats.
      */
-    private final Map<IService, Long> serviceHeartbeats;
+    private final Map<String, Long> serviceHeartbeats;
 
     /**
      * The repository the services are saved in.
@@ -57,8 +48,6 @@ public class ServiceManagerImpl implements IServiceManager {
     public ServiceManagerImpl(IServiceRepository serviceRepository, MercantorServerConfig mercantorServerConfig) {
         this.serviceRepository = serviceRepository;
         this.mercantorServerConfig = mercantorServerConfig;
-        this.serviceByRole = Maps.newHashMap();
-        this.serviceByKey = Maps.newHashMap();
         this.serviceHeartbeats = Maps.newConcurrentMap();
 
         startCheckDeadServicesTask();
@@ -72,9 +61,9 @@ public class ServiceManagerImpl implements IServiceManager {
                 .newSingleThreadScheduledExecutor(new PrefixedThreadFactory(MercantorServerConstants.WORKER_THREAD_PREFIX));
 
         executorService.scheduleAtFixedRate(() -> {
-            for (Map.Entry<IService, Long> entry : this.serviceHeartbeats.entrySet()) {
+            for (Map.Entry<String, Long> entry : this.serviceHeartbeats.entrySet()) {
                 long heartbeat = entry.getValue();
-                IService service = entry.getKey();
+                IService service = serviceRepository.getServiceByKey(entry.getKey());
 
                 if (System.currentTimeMillis() - heartbeat > mercantorServerConfig.getServiceExpirationTimeUnit().toMillis(mercantorServerConfig.getServiceExpiration())) {
                     logger.info("The service {} for role {} at {} is bleeding hard and will be removed!", service.getServiceKey(), service.getRole(), service.getBasePath());
@@ -82,7 +71,7 @@ public class ServiceManagerImpl implements IServiceManager {
                     removeService(service.getServiceKey().toString());
                 }
             }
-        }, 0L, mercantorServerConfig.getServiceExpiration() / 2, mercantorServerConfig.getServiceExpirationTimeUnit());
+        }, 0L, 1, TimeUnit.SECONDS);
     }
 
     @Override
@@ -100,7 +89,7 @@ public class ServiceManagerImpl implements IServiceManager {
 
         serviceRepository.registerService(service);
 
-        serviceHeartbeats.put(service, System.currentTimeMillis());
+        serviceHeartbeats.put(service.getServiceKey().toString(), System.currentTimeMillis());
 
         if (service instanceof ExtendedServiceModel) {
             ((ExtendedServiceModel) service).setExpirationTimeUnit(mercantorServerConfig.getServiceExpirationTimeUnit());
@@ -112,7 +101,7 @@ public class ServiceManagerImpl implements IServiceManager {
     public void updateService(String serviceKey) {
         logger.info("Got heartbeat for service {}.", serviceKey);
 
-        serviceHeartbeats.put(serviceByKey.get(serviceKey), System.currentTimeMillis());
+        serviceHeartbeats.put(serviceKey, System.currentTimeMillis());
     }
 
     @Override
@@ -122,6 +111,6 @@ public class ServiceManagerImpl implements IServiceManager {
         IService service = serviceRepository.getServiceByKey(serviceKey);
 
         serviceRepository.removeService(service);
-        serviceHeartbeats.remove(service);
+        serviceHeartbeats.remove(serviceKey);
     }
 }
