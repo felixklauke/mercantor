@@ -1,5 +1,5 @@
 # mercantor
-A simple but effective network attached service registry used for service discovery in a microservice environment.
+A simple but effective network attached service registry with load balancing capabilities used for service discovery in a microservice environment.
 
 Master: 
 
@@ -8,6 +8,31 @@ Master:
 Dev:    
 
 [![Build Status](https://travis-ci.org/FelixKlauke/mercantor.svg?branch=dev)](https://travis-ci.org/FelixKlauke/mercantor)
+
+# Usage
+- Install [Maven](http://maven.apache.org/download.cgi)
+- Clone this repo
+- Install: ```mvn clean install```
+
+**Maven dependencies**
+
+_Mercantor Server:_
+```xml
+<dependency>
+    <groupId>de.d3adspace</groupId>
+    <artifactId>mercantor-server</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
+_Mercantor Client:_
+```xml
+<dependency>
+    <groupId>de.d3adspace</groupId>
+    <artifactId>mercantor-client</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
 
 # API Docmentation
 **Creating a new service**
@@ -55,30 +80,14 @@ Method / URL: `GET $BASE_URL/service/{role}`
 }
 ```
 
-# Usage
-- Install [Maven](http://maven.apache.org/download.cgi)
-- Clone this repo
-- Install: ```mvn clean install```
+# Load Balancing
+The internal service registry of the server is capable of two different modes to lookup services you registered by their role:
+- Random
+- Round Robin
 
-**Maven dependencies**
+_Random:_ The query will return a random known service with the given role. If you have four known services for the same role the query will return (Example) [s0, s2, s0, s3, s1, s0, s3, s4...]
 
-_Mercantor Server:_
-```xml
-<dependency>
-    <groupId>de.d3adspace</groupId>
-    <artifactId>mercantor-server</artifactId>
-    <version>1.0-SNAPSHOT</version>
-</dependency>
-```
-
-_Mercantor Client:_
-```xml
-<dependency>
-    <groupId>de.d3adspace</groupId>
-    <artifactId>mercantor-client</artifactId>
-    <version>1.0-SNAPSHOT</version>
-</dependency>
-```
+_Round Robin:_ The query will return one service after another. If you have 4 known services for the same role the query will return [s0, s1, s2, s3, s0, s1, s2...] 
 
 # Example
 Server:
@@ -88,6 +97,7 @@ MercantorServerConfig mercantorServerConfig = new MercantorServerConfigBuilder()
         .setPort(8081)
         .setServiceExpiration(30)
         .setServiceExpirationTimeUnit(TimeUnit.SECONDS)
+        .setServiceLookupMode(ServiceLookupMode.RANDOM)
         .createMercantorServerConfig();
         
 IMercantorServer mercantorServer = MercantorServerFactory.createMercantorServer(mercantorServerConfig);
