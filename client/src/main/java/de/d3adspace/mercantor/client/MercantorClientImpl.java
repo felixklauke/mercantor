@@ -1,5 +1,6 @@
 package de.d3adspace.mercantor.client;
 
+import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -49,6 +50,9 @@ public class MercantorClientImpl implements IMercantorClient {
 
     @Override
     public ListenableFuture<IService> registerService(final String basePath, final String role) {
+        Preconditions.checkNotNull(basePath, "basePath cannot be null.");
+        Preconditions.checkNotNull(role, "role cannot be null.");
+
         ListenableFuture<IService> serviceFuture = executorService.submit(() -> serviceManager.registerService(basePath, role));
 
         registerRegisteringCallback(serviceFuture);
@@ -74,6 +78,8 @@ public class MercantorClientImpl implements IMercantorClient {
 
     @Override
     public ListenableFuture<Boolean> unregisterService(final IService service) {
+        Preconditions.checkNotNull(service, "service cannot be null.");
+
         ListenableFuture<Boolean> serviceFuture = executorService.submit(() -> serviceManager.removeService(service));
 
         registerUnregisteringCallback(serviceFuture, service);
@@ -82,6 +88,8 @@ public class MercantorClientImpl implements IMercantorClient {
 
     @Override
     public ListenableFuture<IService> getService(final String role) {
+        Preconditions.checkNotNull(role, "tolr cannot be null.");
+
         final ListenableFuture<IService> serviceFuture = executorService.submit(() -> serviceManager.getService(role));
 
         registerFetchingCallback(serviceFuture, role);
