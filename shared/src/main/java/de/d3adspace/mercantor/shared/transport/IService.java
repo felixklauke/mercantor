@@ -17,6 +17,13 @@ public interface IService {
     UUID getServiceKey();
 
     /**
+     * Set the key of the service.
+     *
+     * @param serviceKey The key of the service.
+     */
+    void setServiceKey(UUID serviceKey);
+
+    /**
      * The base path of the service.
      *
      * @return The base path.
