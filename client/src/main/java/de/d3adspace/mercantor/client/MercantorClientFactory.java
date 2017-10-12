@@ -1,5 +1,6 @@
 package de.d3adspace.mercantor.client;
 
+import com.google.common.base.Preconditions;
 import de.d3adspace.mercantor.client.config.MercantorClientConfig;
 import de.d3adspace.mercantor.client.config.MercantorClientConfigBuilder;
 
@@ -31,6 +32,8 @@ public class MercantorClientFactory {
      * @return The client.
      */
     public static IMercantorClient createMercantorClient(MercantorClientConfig mercantorClientConfig) {
+        Preconditions.checkNotNull(mercantorClientConfig, "mercantorClientConfig cannot be null.");
+
         return new MercantorClientImpl(mercantorClientConfig);
     }
 }
