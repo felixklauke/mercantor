@@ -79,4 +79,14 @@ public class MercantorServerConfig {
     public String getHost() {
         return host;
     }
+
+    @Override
+    public String toString() {
+        return "MercantorServerConfig{" +
+                "host='" + host + '\'' +
+                ", port=" + port +
+                ", serviceExpiration=" + serviceExpiration +
+                ", serviceExpirationTimeUnit=" + serviceExpirationTimeUnit +
+                '}';
+    }
 }

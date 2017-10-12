@@ -2,6 +2,8 @@ package de.d3adspace.mercantor.server;
 
 import de.d3adspace.mercantor.server.config.MercantorServerConfig;
 import de.d3adspace.mercantor.server.config.MercantorServerConfigBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Factory for all server instances.
@@ -11,11 +13,18 @@ import de.d3adspace.mercantor.server.config.MercantorServerConfigBuilder;
 public class MercantorServerFactory {
 
     /**
+     * The logger to log all actions.
+     */
+    private static Logger logger = LoggerFactory.getLogger(MercantorServerFactory.class);
+
+    /**
      * Create a new mercantor server with a default config.
      *
      * @return The server instance.
      */
     public static IMercantorServer createMercantorServer() {
+        logger.info("No config given, server will be created with a default config.");
+
         MercantorServerConfig mercantorServerConfig = new MercantorServerConfigBuilder()
                 .setHost(MercantorServerConstants.DEFAULT_SERVER_HOST)
                 .setPort(MercantorServerConstants.DEFAULT_SERVER_PORT)
@@ -33,6 +42,8 @@ public class MercantorServerFactory {
      * @return The server instance.
      */
     private static IMercantorServer createMercantorServer(MercantorServerConfig mercantorServerConfig) {
+        logger.info("Server will be created using config {}.", mercantorServerConfig);
+
         return new MercantorServerImpl(mercantorServerConfig);
     }
 }
