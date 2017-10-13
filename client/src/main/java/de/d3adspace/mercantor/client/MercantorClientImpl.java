@@ -2,10 +2,6 @@ package de.d3adspace.mercantor.client;
 
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import de.d3adspace.mercantor.client.config.MercantorClientConfig;
-import de.d3adspace.mercantor.client.module.MercantorClientModule;
 import de.d3adspace.mercantor.client.service.IServiceManager;
 import de.d3adspace.mercantor.shared.thread.PrefixedThreadFactory;
 import de.d3adspace.mercantor.shared.transport.IService;
@@ -33,19 +29,21 @@ public class MercantorClientImpl implements IMercantorClient {
      */
     private final ListeningScheduledExecutorService executorService;
 
-    @Inject
+    /**
+     * The service manager.
+     */
     private IServiceManager serviceManager;
 
     /**
      * Create a new client by its config. Used by the {@link MercantorClientFactory}.
      *
-     * @param mercantorClientConfig The underlying config.
+     * @param serviceManager The service manager.
      */
-    MercantorClientImpl(MercantorClientConfig mercantorClientConfig) {
+    @Inject
+    MercantorClientImpl(IServiceManager serviceManager) {
+        this.serviceManager = serviceManager;
         this.logger = LoggerFactory.getLogger(MercantorClientImpl.class);
         this.executorService = MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(4, new PrefixedThreadFactory(MercantorClientConstants.WORKER_THREAD_PREFIX)));
-        Injector injector = Guice.createInjector(new MercantorClientModule(mercantorClientConfig));
-        injector.injectMembers(this);
     }
 
     @Override
