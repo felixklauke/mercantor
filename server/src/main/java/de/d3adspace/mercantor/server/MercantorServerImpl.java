@@ -1,9 +1,6 @@
 package de.d3adspace.mercantor.server;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import de.d3adspace.mercantor.server.config.MercantorServerConfig;
-import de.d3adspace.mercantor.server.module.MercantorServerModule;
 import de.d3adspace.mercantor.server.resource.MercantorResource;
 import de.d3adspace.mercantor.shared.io.ServiceBodyReader;
 import de.d3adspace.mercantor.shared.io.ServiceBodyWriter;
@@ -37,27 +34,28 @@ public class MercantorServerImpl implements IMercantorServer {
      */
     private HttpServer httpServer;
 
-    @Inject
     private MercantorResource mercantorResource;
 
-    @Inject
     private ServiceBodyReader serviceBodyReader;
 
-    @Inject
     private ServiceBodyWriter serviceBodyWriter;
 
     /**
      * Create a new server by its underlying config.
      *
      * @param mercantorServerConfig The config.
+     * @param mercantorResource
+     * @param serviceBodyReader
+     * @param serviceBodyWriter
      */
-    MercantorServerImpl(MercantorServerConfig mercantorServerConfig) {
+    @Inject
+    MercantorServerImpl(MercantorServerConfig mercantorServerConfig, MercantorResource mercantorResource, ServiceBodyReader serviceBodyReader, ServiceBodyWriter serviceBodyWriter) {
         this.mercantorServerConfig = mercantorServerConfig;
+        this.mercantorResource = mercantorResource;
+        this.serviceBodyReader = serviceBodyReader;
+        this.serviceBodyWriter = serviceBodyWriter;
 
         logger.info("Setting up dependency injection.");
-
-        Injector injector = Guice.createInjector(new MercantorServerModule(mercantorServerConfig));
-        injector.injectMembers(this);
 
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();

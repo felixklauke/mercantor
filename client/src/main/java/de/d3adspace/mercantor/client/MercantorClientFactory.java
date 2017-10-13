@@ -1,8 +1,11 @@
 package de.d3adspace.mercantor.client;
 
 import com.google.common.base.Preconditions;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import de.d3adspace.mercantor.client.config.MercantorClientConfig;
 import de.d3adspace.mercantor.client.config.MercantorClientConfigBuilder;
+import de.d3adspace.mercantor.client.module.MercantorClientModule;
 
 /**
  * Create new instances of the client.
@@ -34,6 +37,7 @@ public class MercantorClientFactory {
     public static IMercantorClient createMercantorClient(MercantorClientConfig mercantorClientConfig) {
         Preconditions.checkNotNull(mercantorClientConfig, "mercantorClientConfig cannot be null.");
 
-        return new MercantorClientImpl(mercantorClientConfig);
+        Injector injector = Guice.createInjector(new MercantorClientModule(mercantorClientConfig));
+        return injector.getInstance(MercantorClientImpl.class);
     }
 }

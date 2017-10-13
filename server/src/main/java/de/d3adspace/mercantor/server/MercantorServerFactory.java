@@ -1,7 +1,10 @@
 package de.d3adspace.mercantor.server;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import de.d3adspace.mercantor.server.config.MercantorServerConfig;
 import de.d3adspace.mercantor.server.config.MercantorServerConfigBuilder;
+import de.d3adspace.mercantor.server.module.MercantorServerModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +48,7 @@ public class MercantorServerFactory {
     private static IMercantorServer createMercantorServer(MercantorServerConfig mercantorServerConfig) {
         logger.info("Server will be created using config {}.", mercantorServerConfig);
 
-        return new MercantorServerImpl(mercantorServerConfig);
+        Injector injector = Guice.createInjector(new MercantorServerModule(mercantorServerConfig));
+        return injector.getInstance(MercantorServerImpl.class);
     }
 }
