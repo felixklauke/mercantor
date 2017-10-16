@@ -1,9 +1,12 @@
 package de.d3adspace.mercantor.server.resource;
 
 import de.d3adspace.mercantor.server.config.MercantorServerConfig;
+import de.d3adspace.mercantor.server.exception.IllegalServiceRegisteringException;
 import de.d3adspace.mercantor.server.service.IServiceManager;
 import de.d3adspace.mercantor.shared.path.MercantorPathConstants;
 import de.d3adspace.mercantor.shared.transport.IService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -18,6 +21,11 @@ import java.net.URI;
  */
 @Path("")
 public class MercantorResource {
+
+    /**
+     * The logger to log all actions.
+     */
+    private final Logger logger = LoggerFactory.getLogger(MercantorResource.class);
 
     /**
      * The underlying config.
@@ -48,7 +56,15 @@ public class MercantorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerService(IService serviceContent) {
-        serviceManager.registerService(serviceContent);
+
+        try {
+            serviceManager.registerService(serviceContent);
+        } catch (IllegalServiceRegisteringException e) {
+            logger.error("Invalid service registration.", e);
+
+            return Response.serverError().build();
+        }
+
         return Response.created(URI.create(mercantorServerConfig.getHost() + ":" + mercantorServerConfig.getPort() + MercantorPathConstants.REGISTER + "/" + serviceContent.getServiceKey())).entity(serviceContent).build();
     }
 

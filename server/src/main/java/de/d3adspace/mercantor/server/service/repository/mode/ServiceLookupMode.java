@@ -3,6 +3,7 @@ package de.d3adspace.mercantor.server.service.repository.mode;
 import de.d3adspace.mercantor.server.service.repository.IServiceRepository;
 import de.d3adspace.mercantor.server.service.repository.RandomServiceRepository;
 import de.d3adspace.mercantor.server.service.repository.RoundRobinServiceRepository;
+import de.d3adspace.mercantor.server.service.repository.SingleServiceRepository;
 
 /**
  * The mode how the services will be lookup up their role.
@@ -12,8 +13,9 @@ import de.d3adspace.mercantor.server.service.repository.RoundRobinServiceReposit
 public enum ServiceLookupMode {
 
     RANDOM(RandomServiceRepository.class),
-    ROUND_ROBIN(RoundRobinServiceRepository.class);
-
+    ROUND_ROBIN(RoundRobinServiceRepository.class),
+    SINGLE(SingleServiceRepository.class);
+  
     /**
      * The class that implements the given mode.
      */

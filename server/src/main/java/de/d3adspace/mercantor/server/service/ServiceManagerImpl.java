@@ -3,6 +3,7 @@ package de.d3adspace.mercantor.server.service;
 import com.google.common.collect.Maps;
 import de.d3adspace.mercantor.server.MercantorServerConstants;
 import de.d3adspace.mercantor.server.config.MercantorServerConfig;
+import de.d3adspace.mercantor.server.exception.IllegalServiceRegisteringException;
 import de.d3adspace.mercantor.server.service.repository.IServiceRepository;
 import de.d3adspace.mercantor.shared.thread.PrefixedThreadFactory;
 import de.d3adspace.mercantor.shared.transport.ExtendedServiceModel;
@@ -82,7 +83,7 @@ public class ServiceManagerImpl implements IServiceManager {
     }
 
     @Override
-    public void registerService(IService service) {
+    public void registerService(IService service) throws IllegalServiceRegisteringException {
         logger.info("Registering service at {} for role {} with key {}.", service.getBasePath(), service.getRole(), service.getServiceKey());
 
         service.setServiceKey(UUID.randomUUID());

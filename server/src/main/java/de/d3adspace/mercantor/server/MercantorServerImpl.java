@@ -44,9 +44,9 @@ public class MercantorServerImpl implements IMercantorServer {
      * Create a new server by its underlying config.
      *
      * @param mercantorServerConfig The config.
-     * @param mercantorResource
-     * @param serviceBodyReader
-     * @param serviceBodyWriter
+     * @param mercantorResource The rest resource.
+     * @param serviceBodyReader The body reader for our communication.
+     * @param serviceBodyWriter The body writer for our communication.
      */
     @Inject
     MercantorServerImpl(MercantorServerConfig mercantorServerConfig, MercantorResource mercantorResource, ServiceBodyReader serviceBodyReader, ServiceBodyWriter serviceBodyWriter) {
