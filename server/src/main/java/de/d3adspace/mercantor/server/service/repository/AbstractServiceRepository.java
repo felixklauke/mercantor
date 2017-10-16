@@ -1,6 +1,7 @@
 package de.d3adspace.mercantor.server.service.repository;
 
 import com.google.common.collect.Lists;
+import de.d3adspace.mercantor.server.exception.IllegalServiceRegisteringException;
 import de.d3adspace.mercantor.shared.transport.IService;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public abstract class AbstractServiceRepository implements IServiceRepository {
     }
 
     @Override
-    public void registerService(IService service) {
+    public void registerService(IService service) throws IllegalServiceRegisteringException {
         services.add(service);
     }
 
