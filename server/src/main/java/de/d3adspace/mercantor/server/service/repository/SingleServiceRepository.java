@@ -6,7 +6,7 @@ import de.d3adspace.mercantor.shared.transport.IService;
 /**
  * @author Felix Klauke <fklauke@itemis.de>
  */
-public class SingleServiceRespository extends AbstractServiceRepository {
+public class SingleServiceRepository extends AbstractServiceRepository {
 
     @Override
     public IService getServiceByRole(String role) {
