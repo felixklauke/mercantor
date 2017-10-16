@@ -1,5 +1,5 @@
 # mercantor
-A simple but effective network attached service registry with load balancing capabilities used for service discovery in a microservice environment.
+A simple but effective network attached service registry with optional load balancing capabilities used for service discovery in a microservice environment.
 
 Master: 
 
@@ -84,10 +84,13 @@ Method / URL: `GET $BASE_URL/service/{role}`
 The internal service registry of the server is capable of two different modes to lookup services you registered by their role:
 - Random
 - Round Robin
+- Single
 
 _Random:_ The query will return a random known service with the given role. If you have four known services for the same role the query will return (Example) [s0, s2, s0, s3, s1, s0, s3, s4...]
 
 _Round Robin:_ The query will return one service after another. If you have 4 known services for the same role the query will return [s0, s1, s2, s3, s0, s1, s2...] 
+
+_Single:_ The query will always return the one single service. There cannot be multiple services for one role.
 
 # Example
 Server:
@@ -97,7 +100,7 @@ MercantorServerConfig mercantorServerConfig = new MercantorServerConfigBuilder()
         .setPort(8081)
         .setServiceExpiration(30)
         .setServiceExpirationTimeUnit(TimeUnit.SECONDS)
-        .setServiceLookupMode(ServiceLookupMode.RANDOM)
+        .setServiceLookupMode(ServiceLookupMode.SINGLE)
         .createMercantorServerConfig();
         
 IMercantorServer mercantorServer = MercantorServerFactory.createMercantorServer(mercantorServerConfig);
