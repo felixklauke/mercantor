@@ -1,5 +1,6 @@
 package de.d3adspace.mercantor.server.service.repository;
 
+import de.d3adspace.mercantor.server.exception.IllegalServiceRegisteringException;
 import de.d3adspace.mercantor.shared.transport.IService;
 
 /**
@@ -22,7 +23,7 @@ public interface IServiceRepository {
      *
      * @param service The service.
      */
-    void registerService(IService service);
+    void registerService(IService service) throws IllegalServiceRegisteringException;
 
     /**
      * Get the service that is registered for the given key.
