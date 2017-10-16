@@ -3,6 +3,8 @@ package de.d3adspace.mercantor.server.service.repository;
 import de.d3adspace.mercantor.server.exception.IllegalServiceRegisteringException;
 import de.d3adspace.mercantor.shared.transport.IService;
 
+import java.util.Objects;
+
 /**
  * @author Felix Klauke <fklauke@itemis.de>
  */
@@ -10,7 +12,7 @@ public class SingleServiceRepository extends AbstractServiceRepository {
 
     @Override
     public IService getServiceByRole(String role) {
-        return null;
+        return getServices().stream().filter(service -> Objects.equals(service.getRole(), role)).findFirst().orElse(null);
     }
 
     @Override
