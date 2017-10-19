@@ -15,7 +15,7 @@ public enum ServiceLookupMode {
     RANDOM(RandomServiceRepository.class),
     ROUND_ROBIN(RoundRobinServiceRepository.class),
     SINGLE(SingleServiceRepository.class);
-  
+
     /**
      * The class that implements the given mode.
      */

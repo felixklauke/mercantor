@@ -31,7 +31,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.d3adspace.mercantor.core.MercantorBootstrap</mainClass>
+                            <mainClass>de.d3adspace.mercantor.server.MercantorServerBootstrap</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
