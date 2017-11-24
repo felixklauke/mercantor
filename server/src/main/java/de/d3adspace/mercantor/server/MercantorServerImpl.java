@@ -34,10 +34,19 @@ public class MercantorServerImpl implements IMercantorServer {
      */
     private HttpServer httpServer;
 
+    /**
+     * The basic rest resource.
+     */
     private MercantorResource mercantorResource;
 
+    /**
+     * The reader that can deserialize our request data.
+     */
     private ServiceBodyReader serviceBodyReader;
 
+    /**
+     * The writer that can serialize our response data.
+     */
     private ServiceBodyWriter serviceBodyWriter;
 
     /**

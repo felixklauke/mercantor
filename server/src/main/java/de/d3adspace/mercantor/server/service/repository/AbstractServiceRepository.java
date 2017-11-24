@@ -22,7 +22,7 @@ public abstract class AbstractServiceRepository implements IServiceRepository {
      * Create a new service repository with default data.
      */
     public AbstractServiceRepository() {
-        this(Lists.newLinkedList());
+        this(Lists.newCopyOnWriteArrayList());
     }
 
     /**
