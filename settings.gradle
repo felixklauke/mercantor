@@ -1,0 +1,3 @@
+rootProject.name = 'mercantor-parent'
+rootProject.buildFileName = 'build.gradle.kts'
+
