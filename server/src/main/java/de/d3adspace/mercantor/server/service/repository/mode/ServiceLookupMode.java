@@ -33,4 +33,11 @@ public enum ServiceLookupMode {
     public Class<? extends IServiceRepository> getImplementationClazz() {
         return implementationClazz;
     }
+
+    @Override
+    public String toString() {
+        return "ServiceLookupMode{" +
+                "implementationClazz=" + implementationClazz +
+                '}';
+    }
 }
