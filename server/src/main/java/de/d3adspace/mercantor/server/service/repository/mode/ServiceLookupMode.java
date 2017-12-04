@@ -15,7 +15,7 @@ public enum ServiceLookupMode {
     RANDOM(RandomServiceRepository.class),
     ROUND_ROBIN(RoundRobinServiceRepository.class),
     SINGLE(SingleServiceRepository.class);
-  
+
     /**
      * The class that implements the given mode.
      */
@@ -32,5 +32,12 @@ public enum ServiceLookupMode {
      */
     public Class<? extends IServiceRepository> getImplementationClazz() {
         return implementationClazz;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceLookupMode{" +
+                "implementationClazz=" + implementationClazz +
+                '}';
     }
 }
