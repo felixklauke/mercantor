@@ -4,7 +4,13 @@ import de.d3adspace.mercantor.core.service.Service
 
 class MercantorImpl : Mercantor {
 
-    override fun registerService(service: Service) {
+    override fun getServices(): Set<Service> {
+        return emptySet()
+    }
 
+    override fun invalidateService(service: Service) {
+    }
+
+    override fun registerService(service: Service) {
     }
 }
