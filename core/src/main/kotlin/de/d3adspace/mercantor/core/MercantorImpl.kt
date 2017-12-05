@@ -12,5 +12,6 @@ class MercantorImpl : Mercantor {
     }
 
     override fun registerService(service: Service) {
+
     }
 }
