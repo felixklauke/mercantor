@@ -1,19 +1,27 @@
 package de.d3adspace.mercantor.server.rest
 
+import de.d3adspace.mercantor.server.application.MercantorServerApplication
+import org.glassfish.grizzly.http.server.HttpServer
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory
+import org.glassfish.jersey.server.ResourceConfig
+import java.net.URI
+
 /**
  * @author Felix Klauke <fklauke@itemis.de>
  */
 class JerseyRestManager : RestManager {
 
+    private lateinit var httpServer: HttpServer
+
     override fun startService() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val uri = URI.create("0.0.0.0:8080")
+        val resourceConfig = ResourceConfig.forApplication(MercantorServerApplication())
+        httpServer = GrizzlyHttpServerFactory.createHttpServer(uri, resourceConfig)
     }
 
     override fun stopService() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        httpServer.shutdown()
     }
 
-    override fun isServiceRunning(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun isServiceRunning(): Boolean = httpServer.isStarted
 }
