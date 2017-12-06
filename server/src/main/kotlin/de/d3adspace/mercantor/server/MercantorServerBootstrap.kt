@@ -1,6 +1,7 @@
 package de.d3adspace.mercantor.server
 
 import de.d3adspace.mercantor.core.MercantorFactory
+import de.d3adspace.mercantor.server.rest.RestManagerFactory
 
 /**
  * The central bootstrap of the server functionality.
@@ -12,6 +13,6 @@ object MercantorServerBootstrap {
     @JvmStatic
     fun main(args: Array<String>) {
         val mercantor = MercantorFactory.createMercantor()
-        
+        val restManager = RestManagerFactory.createRestManager()
     }
 }
