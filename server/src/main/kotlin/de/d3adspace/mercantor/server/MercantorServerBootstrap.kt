@@ -13,6 +13,7 @@ object MercantorServerBootstrap {
     @JvmStatic
     fun main(args: Array<String>) {
         val mercantor = MercantorFactory.createMercantor()
-        val restManager = RestManagerFactory.createRestManager()
+        val restManager = RestManagerFactory.createRestManager(mercantor)
+        restManager.startService()
     }
 }
