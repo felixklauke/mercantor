@@ -9,6 +9,7 @@ class MercantorImpl : Mercantor {
     }
 
     override fun invalidateService(service: Service) {
+
     }
 
     override fun registerService(service: Service) {
