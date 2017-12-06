@@ -1,5 +1,6 @@
 package de.d3adspace.mercantor.core
 
+import de.d3adspace.mercantor.core.heartbeat.HeartBeat
 import de.d3adspace.mercantor.core.service.Service
 
 /**
@@ -14,4 +15,6 @@ interface Mercantor {
     fun invalidateService(service: Service)
 
     fun getServices(): Set<Service>
+
+    fun handleServiceHeartBeat(heartBeat: HeartBeat)
 }
