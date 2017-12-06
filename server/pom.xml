@@ -9,13 +9,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mercantor-server</artifactId>
+
     <dependencies>
+        <!-- Core -->
         <dependency>
             <groupId>de.d3adspace</groupId>
             <artifactId>mercantor-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <!-- Grizzly container for Jersey REST -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-grizzly2-http</artifactId>
+            <version>2.26</version>
+        </dependency>
     </dependencies>
-
-
 </project>
