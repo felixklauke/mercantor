@@ -5,7 +5,8 @@ import java.util.*
 /**
  * @author Felix Klauke <fklauke@itemis.de>
  */
-data class ServiceModel(val serviceName: String,
+data class ServiceModel(val vipAddress: String,
+                        val serviceName: String,
                         val serviceId: UUID,
                         val serviceHost: String,
                         val servicePort: Int)
