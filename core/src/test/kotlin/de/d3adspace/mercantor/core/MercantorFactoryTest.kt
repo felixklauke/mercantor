@@ -1,13 +1,14 @@
 package de.d3adspace.mercantor.core
 
 import org.junit.Assert.assertNotNull
+import org.junit.Test
 
 /**
  * @author Felix Klauke <fklauke@itemis.de>
  */
 class MercantorFactoryTest {
 
-    @org.junit.Test
+    @Test
     fun createMercantor() {
         val mercantor = MercantorFactory.createMercantor()
 
