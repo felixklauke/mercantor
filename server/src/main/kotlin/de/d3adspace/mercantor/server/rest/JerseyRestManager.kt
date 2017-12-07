@@ -17,6 +17,7 @@ class JerseyRestManager(private val mercantor: Mercantor, private val config: Me
 
     override fun startService() {
         val uri = URI.create(config.restURI)
+
         val resourceConfig = ResourceConfig.forApplication(MercantorServerApplication(mercantor))
         httpServer = GrizzlyHttpServerFactory.createHttpServer(uri, resourceConfig)
     }
