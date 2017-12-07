@@ -11,10 +11,10 @@ class ServiceManagerImpl : ServiceManager {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getServices(vipAddress: String): Set<Service> {
+    override fun getServices(vipAddress: String): List<Service> {
         return services.filterValues {
             it.getVipAddress() == vipAddress
-        }.values.toSet()
+        }.values.toList()
     }
 
     override fun handleHeartBeat(heartBeat: HeartBeat) {

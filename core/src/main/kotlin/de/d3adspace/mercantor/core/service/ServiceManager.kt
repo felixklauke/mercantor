@@ -8,7 +8,7 @@ import java.util.*
  */
 interface ServiceManager {
 
-    fun getServices(vipAddress: String): Set<Service>
+    fun getServices(vipAddress: String): List<Service>
 
     fun getService(vipAddress: String): Service
 
