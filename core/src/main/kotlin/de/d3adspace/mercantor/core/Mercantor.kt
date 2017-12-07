@@ -10,11 +10,11 @@ import de.d3adspace.mercantor.core.service.Service
  */
 interface Mercantor {
 
-    fun registerService(service: Service)
+    fun registerService(service: Service): Service
 
     fun invalidateService(service: Service)
 
-    fun getServices(): Set<Service>
+    fun getService(vipAddress: String): Service
 
     fun handleServiceHeartBeat(heartBeat: HeartBeat)
 }

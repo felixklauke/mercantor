@@ -10,15 +10,15 @@ class MercantorImpl(private val serviceManager: ServiceManager) : Mercantor {
         serviceManager.handleHeartBeat(heartBeat)
     }
 
-    override fun getServices(): Set<Service> {
-        return serviceManager.getServices()
+    override fun getService(vipAddress: String): Service {
+        return serviceManager.getService(vipAddress)
     }
 
     override fun invalidateService(service: Service) {
         serviceManager.invalidate(service)
     }
 
-    override fun registerService(service: Service) {
-        serviceManager.register(service)
+    override fun registerService(service: Service): Service {
+        return serviceManager.register(service)
     }
 }
