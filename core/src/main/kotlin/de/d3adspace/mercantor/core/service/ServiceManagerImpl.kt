@@ -25,6 +25,10 @@ class ServiceManagerImpl : ServiceManager {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun invalidate(serviceId: UUID) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun invalidate(service: Service) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
