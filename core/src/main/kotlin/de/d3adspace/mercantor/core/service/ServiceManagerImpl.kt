@@ -5,10 +5,33 @@ import java.util.*
 
 class ServiceManagerImpl : ServiceManager {
 
+    /**
+     * Contains all services known to this instance.
+     */
     private val services = hashMapOf<UUID, Service>()
 
+    /**
+     * The current state of the round robin selection process.
+     */
+    private var currentServiceIndices = hashMapOf<String, Int>()
+
     override fun getService(vipAddress: String): Service {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val currentServices = getServices()
+
+        if (currentServices.size == 1) {
+            return currentServices.first()
+        }
+
+        var index = currentServiceIndices.getOrPut(vipAddress, { 0 })
+
+        index++
+
+        if (index == currentServiceIndices.size) {
+            index = 0
+        }
+
+        currentServiceIndices.put(vipAddress, index)
+        return currentServices.elementAt(index)
     }
 
     override fun getServices(vipAddress: String): List<Service> {
