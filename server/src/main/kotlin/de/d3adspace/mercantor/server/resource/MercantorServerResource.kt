@@ -22,12 +22,9 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @Consumes(MediaType.APPLICATION_JSON)
     @ManagedAsync
     fun registerService(@Suspended requestContext: AsyncResponse, service: Service) {
-        println("Handling service $service in Thread ${Thread.currentThread().name}")
-
-            val registeredService = mercantor.registerService(service)
-            val response = Response.ok().entity(registeredService)
-            requestContext.resume(response.build())
-
+        val registeredService = mercantor.registerService(service)
+        val response = Response.ok().entity(registeredService)
+        requestContext.resume(response.build())
     }
 
     @PUT
@@ -50,9 +47,9 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @Path("/service/get/{vipAddress}")
     @ManagedAsync
     fun getService(@Suspended requestContext: AsyncResponse, @PathParam("vipAddress") vipAddress: String) {
-            val service = mercantor.getService(vipAddress)
-            val response = Response.ok().entity(service)
-            requestContext.resume(response)
+        val service = mercantor.getService(vipAddress)
+        val response = Response.ok().entity(service)
+        requestContext.resume(response)
 
     }
 }
