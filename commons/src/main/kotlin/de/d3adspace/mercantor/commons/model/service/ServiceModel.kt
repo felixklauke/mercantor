@@ -16,4 +16,8 @@ data class ServiceModel(private val vipAddress: String,
     }
 
     override fun getVipAddress(): String = vipAddress
+
+    override fun toString(): String {
+        return "ServiceModel(vipAddress='$vipAddress', serviceName='$serviceName', serviceId=$serviceId, serviceHost='$serviceHost', servicePort=$servicePort)"
+    }
 }
