@@ -23,8 +23,8 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @ManagedAsync
     fun registerService(@Suspended requestContext: AsyncResponse, service: Service) {
         val registeredService = mercantor.registerService(service)
-        val response = Response.ok().entity(registeredService)
-        requestContext.resume(response.build())
+        val response = Response.ok().entity(registeredService).build()
+        requestContext.resume(response)
     }
 
     @PUT
@@ -48,7 +48,7 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @ManagedAsync
     fun getService(@Suspended requestContext: AsyncResponse, @PathParam("vipAddress") vipAddress: String) {
         val service = mercantor.getService(vipAddress)
-        val response = Response.ok().entity(service)
+        val response = Response.ok().entity(service).build()
         requestContext.resume(response)
     }
 }
