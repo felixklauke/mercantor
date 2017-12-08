@@ -50,6 +50,5 @@ class MercantorServerResource(private val mercantor: Mercantor) {
         val service = mercantor.getService(vipAddress)
         val response = Response.ok().entity(service)
         requestContext.resume(response)
-
     }
 }
