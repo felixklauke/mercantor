@@ -1,4 +1,4 @@
-package de.d3adspace.mercantor.core.heartbeat
+package de.d3adspace.mercantor.commons.model.heartbeat
 
 import java.util.*
 

@@ -1,6 +1,7 @@
 package de.d3adspace.mercantor.core.service
 
-import de.d3adspace.mercantor.core.heartbeat.HeartBeat
+import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
+import de.d3adspace.mercantor.commons.model.service.Service
 import java.util.*
 
 /**
