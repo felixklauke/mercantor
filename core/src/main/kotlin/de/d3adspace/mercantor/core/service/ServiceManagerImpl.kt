@@ -18,7 +18,7 @@ class ServiceManagerImpl : ServiceManager {
     private var currentServiceIndices = ConcurrentHashMap<String, Int>()
 
     override fun getService(vipAddress: String): Service {
-        val currentServices = getServices()
+        val currentServices = getServices(vipAddress)
 
         if (currentServices.size == 1) {
             return currentServices.first()
