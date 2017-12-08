@@ -4,6 +4,7 @@ import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
 import de.d3adspace.mercantor.commons.model.service.Service
 import de.d3adspace.mercantor.core.Mercantor
 import org.glassfish.jersey.server.ManagedAsync
+import java.util.*
 import javax.ws.rs.*
 import javax.ws.rs.container.AsyncResponse
 import javax.ws.rs.container.Suspended
@@ -32,15 +33,22 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @Consumes(MediaType.APPLICATION_JSON)
     @ManagedAsync
     fun handleHeartBeat(@Suspended requestContext: AsyncResponse, heartBeat: HeartBeat) {
+        mercantor.handleServiceHeartBeat(heartBeat)
 
+        val response = Response.ok().build()
+        requestContext.resume(response)
     }
 
     @DELETE
     @Path("/service/invalidate/{serviceId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @ManagedAsync
-    fun invalidateService(@Suspended requestContext: AsyncResponse) {
+    fun invalidateService(@Suspended requestContext: AsyncResponse, @PathParam("serviceId") serviceId: String) {
+        val uuid = UUID.fromString(serviceId)
+        mercantor.invalidateService(uuid)
 
+        val response = Response.ok().build()
+        requestContext.resume(response)
     }
 
     @GET
