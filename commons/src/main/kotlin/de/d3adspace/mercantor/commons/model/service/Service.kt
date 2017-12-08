@@ -1,4 +1,4 @@
-package de.d3adspace.mercantor.core.service
+package de.d3adspace.mercantor.commons.model.service
 
 import java.util.*
 

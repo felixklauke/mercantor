@@ -1,19 +1,21 @@
 package de.d3adspace.mercantor.core.service
 
-import de.d3adspace.mercantor.core.heartbeat.HeartBeat
+import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
+import de.d3adspace.mercantor.commons.model.service.Service
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 class ServiceManagerImpl : ServiceManager {
 
     /**
      * Contains all services known to this instance.
      */
-    private val services = hashMapOf<UUID, Service>()
+    private val services = ConcurrentHashMap<UUID, Service>()
 
     /**
      * The current state of the round robin selection process.
      */
-    private var currentServiceIndices = hashMapOf<String, Int>()
+    private var currentServiceIndices = ConcurrentHashMap<String, Int>()
 
     override fun getService(vipAddress: String): Service {
         val currentServices = getServices()

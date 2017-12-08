@@ -1,5 +1,7 @@
 package de.d3adspace.mercantor.server.application
 
+import de.d3adspace.mercantor.commons.codec.ServiceMessageBodyReader
+import de.d3adspace.mercantor.commons.codec.ServiceMessageBodyWriter
 import de.d3adspace.mercantor.core.Mercantor
 import de.d3adspace.mercantor.server.resource.MercantorServerResource
 import javax.ws.rs.core.Application
@@ -10,6 +12,6 @@ import javax.ws.rs.core.Application
 class MercantorServerApplication(val mercantor: Mercantor) : Application() {
 
     override fun getSingletons(): MutableSet<Any> {
-        return mutableSetOf(MercantorServerResource(mercantor))
+        return mutableSetOf(MercantorServerResource(mercantor), ServiceMessageBodyReader(), ServiceMessageBodyWriter())
     }
 }

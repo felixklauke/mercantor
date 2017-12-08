@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.core
 
-import de.d3adspace.mercantor.core.heartbeat.HeartBeat
-import de.d3adspace.mercantor.core.service.Service
+import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
+import de.d3adspace.mercantor.commons.model.service.Service
 import de.d3adspace.mercantor.core.service.ServiceManager
 
 class MercantorImpl(private val serviceManager: ServiceManager) : Mercantor {
