@@ -18,7 +18,7 @@ class ServiceManagerImpl : ServiceManager {
     private var currentServiceIndices = ConcurrentHashMap<String, Int>()
 
     override fun getService(vipAddress: String): Service {
-        val currentServices = getServices()
+        val currentServices = getServices(vipAddress)
 
         if (currentServices.size == 1) {
             return currentServices.first()
@@ -46,16 +46,14 @@ class ServiceManagerImpl : ServiceManager {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getServices(): Set<Service> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getServices(): Set<Service> = services.values.toSet()
 
     override fun invalidate(serviceId: UUID) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        services.remove(serviceId)
     }
 
     override fun invalidate(service: Service) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        services.values.remove(service)
     }
 
     override fun register(service: Service): Service {
