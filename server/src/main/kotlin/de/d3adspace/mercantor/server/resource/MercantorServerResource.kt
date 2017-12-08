@@ -3,7 +3,7 @@ package de.d3adspace.mercantor.server.resource
 import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
 import de.d3adspace.mercantor.commons.model.service.Service
 import de.d3adspace.mercantor.core.Mercantor
-import java.util.concurrent.Executors
+import org.glassfish.jersey.server.ManagedAsync
 import javax.ws.rs.*
 import javax.ws.rs.container.AsyncResponse
 import javax.ws.rs.container.Suspended
@@ -17,22 +17,23 @@ import javax.ws.rs.core.Response
 @Produces(MediaType.APPLICATION_JSON)
 class MercantorServerResource(private val mercantor: Mercantor) {
 
-    private val executor = Executors.newCachedThreadPool()
-
     @POST
     @Path("/service/register")
     @Consumes(MediaType.APPLICATION_JSON)
+    @ManagedAsync
     fun registerService(@Suspended requestContext: AsyncResponse, service: Service) {
-        executor.execute {
+        println("Handling service $service in Thread ${Thread.currentThread().name}")
+
             val registeredService = mercantor.registerService(service)
             val response = Response.ok().entity(registeredService)
             requestContext.resume(response.build())
-        }
+
     }
 
     @PUT
     @Path("/service/heartbeat")
     @Consumes(MediaType.APPLICATION_JSON)
+    @ManagedAsync
     fun handleHeartBeat(@Suspended requestContext: AsyncResponse, heartBeat: HeartBeat) {
 
     }
@@ -40,17 +41,18 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @DELETE
     @Path("/service/invalidate/{serviceId}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @ManagedAsync
     fun invalidateService(@Suspended requestContext: AsyncResponse) {
 
     }
 
     @GET
     @Path("/service/get/{vipAddress}")
+    @ManagedAsync
     fun getService(@Suspended requestContext: AsyncResponse, @PathParam("vipAddress") vipAddress: String) {
-        executor.execute {
             val service = mercantor.getService(vipAddress)
             val response = Response.ok().entity(service)
             requestContext.resume(response)
-        }
+
     }
 }
