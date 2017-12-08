@@ -17,11 +17,6 @@ class ServiceManagerImpl : ServiceManager {
      */
     private var currentServiceIndices = ConcurrentHashMap<String, Int>()
 
-    /**
-     * The current state of the round robin selection process.
-     */
-    private var currentServiceIndices = hashMapOf<String, Int>()
-
     override fun getService(vipAddress: String): Service {
         val currentServices = getServices()
 
