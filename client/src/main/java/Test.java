@@ -31,7 +31,6 @@ public class Test {
                     .request(MediaType.APPLICATION_JSON)
                     .async().get().get()
                     .readEntity(ServiceClusterModel.class));
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
