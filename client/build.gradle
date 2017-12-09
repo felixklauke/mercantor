@@ -1,0 +1,5 @@
+description = ''
+dependencies {
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.26'
+    compile project(':mercantor-commons')
+}

@@ -1,2 +1,2 @@
 language: kotlin
-script: mvn clean test package
+script: gradle build

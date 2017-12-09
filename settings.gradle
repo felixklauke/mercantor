@@ -1,0 +1,10 @@
+rootProject.name = 'mercantor-parent'
+include ':mercantor-core'
+include ':mercantor-server'
+include ':mercantor-client'
+include ':mercantor-commons'
+
+project(':mercantor-core').projectDir = "$rootDir/core" as File
+project(':mercantor-server').projectDir = "$rootDir/server" as File
+project(':mercantor-client').projectDir = "$rootDir/client" as File
+project(':mercantor-commons').projectDir = "$rootDir/commons" as File
