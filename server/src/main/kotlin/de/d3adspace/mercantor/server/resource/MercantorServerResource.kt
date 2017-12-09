@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.server.resource
 
 import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
-import de.d3adspace.mercantor.commons.model.service.Service
+import de.d3adspace.mercantor.commons.model.service.ServiceModel
 import de.d3adspace.mercantor.core.Mercantor
 import org.glassfish.jersey.server.ManagedAsync
 import java.util.*
@@ -22,7 +22,7 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @Path("/service/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @ManagedAsync
-    fun registerService(@Suspended requestContext: AsyncResponse, service: Service) {
+    fun registerService(@Suspended requestContext: AsyncResponse, service: ServiceModel) {
         val registeredService = mercantor.registerService(service)
         val response = Response.ok().entity(registeredService).build()
         requestContext.resume(response)
@@ -53,10 +53,19 @@ class MercantorServerResource(private val mercantor: Mercantor) {
 
     @GET
     @Path("/service/get/{vipAddress}")
+    @Produces(MediaType.APPLICATION_JSON)
     @ManagedAsync
-    fun getService(@Suspended requestContext: AsyncResponse, @PathParam("vipAddress") vipAddress: String) {
-        val service = mercantor.getService(vipAddress)
-        val response = Response.ok().entity(service).build()
+    fun getServices(@Suspended requestContext: AsyncResponse, @PathParam("vipAddress") vipAddress: String, @QueryParam("limit") limit: Int) {
+        val response: Response
+
+        response = if (limit == 1 || limit == 0) {
+            val service = mercantor.getService(vipAddress)
+            Response.ok().entity(service).build()
+        } else {
+            val services = mercantor.getServices(vipAddress, limit)
+            Response.ok().entity(services).build()
+        }
+
         requestContext.resume(response)
     }
 }
