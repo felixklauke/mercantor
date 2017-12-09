@@ -11,4 +11,6 @@ interface MercantorDiscoveryClient {
     fun discoverService(vipAddress: String): ServiceModel
 
     fun discoverServiceCluster(vipAddress: String): ServiceClusterModel
+
+    fun initializeWebTargets()
 }

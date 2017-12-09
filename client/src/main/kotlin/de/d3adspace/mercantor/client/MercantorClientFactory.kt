@@ -8,6 +8,8 @@ import de.d3adspace.mercantor.client.config.MercantorClientConfig
 object MercantorClientFactory {
 
     fun createDiscoveryClient(mercantorClientConfig: MercantorClientConfig): MercantorDiscoveryClient {
-        return MercantorDiscoveryClientImpl(mercantorClientConfig)
+        val discoveryClient = MercantorDiscoveryClientImpl(mercantorClientConfig)
+        discoveryClient.initializeWebTargets()
+        return discoveryClient
     }
 }

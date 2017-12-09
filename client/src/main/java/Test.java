@@ -1,3 +1,6 @@
+import de.d3adspace.mercantor.client.MercantorClientFactory;
+import de.d3adspace.mercantor.client.MercantorDiscoveryClient;
+import de.d3adspace.mercantor.client.config.MercantorClientConfig;
 import de.d3adspace.mercantor.commons.codec.ServiceClusterMessageBodyReader;
 import de.d3adspace.mercantor.commons.codec.ServiceClusterMessageBodyWriter;
 import de.d3adspace.mercantor.commons.codec.ServiceMessageBodyReader;
@@ -9,7 +12,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Felix Klauke <fklauke@itemis.de>
@@ -25,7 +27,16 @@ public class Test {
             client.target("http://127.0.0.1:8080/v1/service/register").request(MediaType.APPLICATION_JSON).post(Entity.json(service));
         }
 
-        try {
+        MercantorClientConfig mercantorClientConfig = new MercantorClientConfig("http://127.0.0.1:8080");
+        MercantorDiscoveryClient discoveryClient = MercantorClientFactory.INSTANCE.createDiscoveryClient(mercantorClientConfig);
+
+        ServiceModel serviceModel = discoveryClient.discoverService("de.felix_klauke.service.string");
+        System.out.println("Found service " + serviceModel);
+
+        ServiceClusterModel serviceClusterModel = discoveryClient.discoverServiceCluster("de.felix_klauke.service.string");
+        System.out.println("Found service cluster " + serviceClusterModel);
+
+        /*try {
             System.out.println(client.target("http://127.0.0.1:8080/v1/service/get/de.felix_klauke.service.string")
                     .queryParam("limit", 5)
                     .request(MediaType.APPLICATION_JSON)
@@ -35,6 +46,6 @@ public class Test {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
