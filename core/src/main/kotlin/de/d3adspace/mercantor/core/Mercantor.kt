@@ -1,7 +1,8 @@
 package de.d3adspace.mercantor.core
 
 import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
-import de.d3adspace.mercantor.commons.model.service.Service
+import de.d3adspace.mercantor.commons.model.service.ServiceClusterModel
+import de.d3adspace.mercantor.commons.model.service.ServiceModel
 import java.util.*
 
 /**
@@ -11,13 +12,15 @@ import java.util.*
  */
 interface Mercantor {
 
-    fun registerService(service: Service): Service
+    fun registerService(service: ServiceModel): ServiceModel
 
-    fun invalidateService(service: Service)
+    fun invalidateService(service: ServiceModel)
 
-    fun getService(vipAddress: String): Service
+    fun getService(vipAddress: String): ServiceModel
 
     fun handleServiceHeartBeat(heartBeat: HeartBeat)
 
     fun invalidateService(serviceId: UUID)
+
+    fun getServices(vipAddress: String, limit: Int): ServiceClusterModel
 }

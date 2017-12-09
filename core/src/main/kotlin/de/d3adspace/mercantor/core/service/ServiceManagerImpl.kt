@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.core.service
 
 import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
-import de.d3adspace.mercantor.commons.model.service.Service
+import de.d3adspace.mercantor.commons.model.service.ServiceModel
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -10,14 +10,14 @@ class ServiceManagerImpl : ServiceManager {
     /**
      * Contains all services known to this instance.
      */
-    private val services = ConcurrentHashMap<UUID, Service>()
+    private val services = ConcurrentHashMap<UUID, ServiceModel>()
 
     /**
      * The current state of the round robin selection process.
      */
     private var currentServiceIndices = ConcurrentHashMap<String, Int>()
 
-    override fun getService(vipAddress: String): Service {
+    override fun getService(vipAddress: String): ServiceModel {
         val currentServices = getServices(vipAddress)
 
         if (currentServices.size == 1) {
@@ -36,7 +36,10 @@ class ServiceManagerImpl : ServiceManager {
         return currentServices.elementAt(index)
     }
 
-    override fun getServices(vipAddress: String): List<Service> {
+    override fun getServices(vipAddress: String): List<ServiceModel> {
+        println("We have ${services.size} services.")
+
+
         return services.filterValues {
             it.getVipAddress() == vipAddress
         }.values.toList()
@@ -46,17 +49,17 @@ class ServiceManagerImpl : ServiceManager {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getServices(): Set<Service> = services.values.toSet()
+    override fun getServices(): Set<ServiceModel> = services.values.toSet()
 
     override fun invalidate(serviceId: UUID) {
         services.remove(serviceId)
     }
 
-    override fun invalidate(service: Service) {
+    override fun invalidate(service: ServiceModel) {
         services.values.remove(service)
     }
 
-    override fun register(service: Service): Service {
+    override fun register(service: ServiceModel): ServiceModel {
         val randomUUID = UUID.randomUUID()
         service.setId(randomUUID)
 
