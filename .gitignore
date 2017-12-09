@@ -86,3 +86,4 @@ buildNumber.properties
 
 ### Gradle
 .gradle
+build
