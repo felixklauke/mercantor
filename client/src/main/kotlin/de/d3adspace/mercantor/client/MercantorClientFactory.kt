@@ -7,7 +7,7 @@ import de.d3adspace.mercantor.client.config.MercantorClientConfig
  */
 object MercantorClientFactory {
 
-    fun createClient(mercantorClientConfig: MercantorClientConfig): MercantorClient {
-        return MercantorClientImpl(mercantorClientConfig)
+    fun createDiscoveryClient(mercantorClientConfig: MercantorClientConfig): MercantorDiscoveryClient {
+        return MercantorDiscoveryClientImpl(mercantorClientConfig)
     }
 }
