@@ -87,3 +87,7 @@ buildNumber.properties
 ### Gradle
 .gradle
 build
+
+### Logging
+log
+logs
