@@ -19,7 +19,7 @@ class MercantorImpl(private val serviceManager: ServiceManager) : Mercantor {
 
         return when (limit) {
             -1 -> ServiceClusterModel(serviceManager.getServices(vipAddress))
-            else -> ServiceClusterModel(serviceManager.getServices(vipAddress).shuffled().take(5))
+            else -> ServiceClusterModel(serviceManager.getServices(vipAddress).shuffled().take(limit))
         }
     }
 
