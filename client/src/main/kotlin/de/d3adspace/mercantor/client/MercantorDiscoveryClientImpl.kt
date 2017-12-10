@@ -7,7 +7,6 @@ import de.d3adspace.mercantor.commons.codec.ServiceMessageBodyReader
 import de.d3adspace.mercantor.commons.codec.ServiceMessageBodyWriter
 import de.d3adspace.mercantor.commons.model.service.ServiceClusterModel
 import de.d3adspace.mercantor.commons.model.service.ServiceModel
-import java.nio.ByteBuffer
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.MediaType
@@ -28,15 +27,19 @@ class MercantorDiscoveryClientImpl(val mercantorClientConfig: MercantorClientCon
     }
 
     override fun discoverServiceCluster(vipAddress: String): ServiceClusterModel {
-        return getServiceTarget.resolveTemplate("vipAddress", vipAddress)
-                .queryParam("limit", 10)
-                .request(MediaType.APPLICATION_JSON)
-                .get<ServiceClusterModel>(ServiceClusterModel::class.java)
+        return discoverServiceCluster(vipAddress, 10)
     }
 
     override fun discoverService(vipAddress: String): ServiceModel {
         return getServiceTarget.resolveTemplate("vipAddress", vipAddress)
                 .request(MediaType.APPLICATION_JSON)
                 .get<ServiceModel>(ServiceModel::class.java)
+    }
+
+    override fun discoverServiceCluster(vipAddress: String, limit: Int): ServiceClusterModel {
+        return getServiceTarget.resolveTemplate("vipAddress", vipAddress)
+                .queryParam("limit", limit)
+                .request(MediaType.APPLICATION_JSON)
+                .get<ServiceClusterModel>(ServiceClusterModel::class.java)
     }
 }
