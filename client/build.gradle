@@ -2,4 +2,7 @@ description = ''
 dependencies {
     compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.26'
     compile project(':mercantor-commons')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+test.testClassesDir = project.tasks.compileTestKotlin.destinationDir
