@@ -40,7 +40,6 @@ object MercantorServerBootstrap {
             serverConfig = gson.fromJson(it, serverConfig.javaClass)
         }
 
-
         return serverConfig
     }
 }
