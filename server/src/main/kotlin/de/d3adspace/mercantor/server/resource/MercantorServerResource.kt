@@ -47,11 +47,11 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     }
 
     @DELETE
-    @Path("/service/invalidate/{serviceId}")
+    @Path("/service/invalidate/{instanceId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @ManagedAsync
-    fun invalidateService(@Suspended requestContext: AsyncResponse, @PathParam("serviceId") serviceId: String) {
-        val uuid = UUID.fromString(serviceId)
+    fun invalidateService(@Suspended requestContext: AsyncResponse, @PathParam("instanceId") instanceId: String) {
+        val uuid = UUID.fromString(instanceId)
         mercantor.deleteService(uuid)
 
         val response = Response.ok().build()
