@@ -38,7 +38,7 @@ class MercantorImpl(private val serviceRepository: ServiceRepository) : Mercanto
     override fun handleHeartbeat(heartbeat: HeartbeatModel) {
         logger.info("Got heartbeat from instance with id ${heartbeat.instanceId}")
 
-        serviceRepository.updateStatus(heartbeat.instanceId, heartbeat.status)
+        serviceRepository.updateStatus(heartbeat)
     }
 
     override fun getService(vipAddress: String): List<ServiceModel> {
@@ -51,7 +51,5 @@ class MercantorImpl(private val serviceRepository: ServiceRepository) : Mercanto
 
     private fun handleExpiration(service: ServiceModel) {
         logger.info("The service ${service.instanceId} expired.")
-
-        service.status = ServiceStatus.OUT_OF_SERVICE
     }
 }

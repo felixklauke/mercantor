@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.core.service
 
+import de.d3adspace.mercantor.commons.model.HeartbeatModel
 import de.d3adspace.mercantor.commons.model.ServiceModel
-import de.d3adspace.mercantor.commons.model.ServiceStatus
 import io.reactivex.Observable
 import java.util.*
 
@@ -14,7 +14,7 @@ interface ServiceRepository {
 
     fun delete(instanceId: UUID)
 
-    fun updateStatus(instanceId: UUID, status: ServiceStatus)
+    fun updateStatus(heartbeat: HeartbeatModel)
 
     fun getService(vipAddress: String): List<ServiceModel>
 
