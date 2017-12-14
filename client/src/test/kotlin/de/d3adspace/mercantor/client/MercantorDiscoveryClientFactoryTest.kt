@@ -1,23 +1,20 @@
 package de.d3adspace.mercantor.client
 
-import org.junit.After
-import org.junit.Before
+import de.d3adspace.mercantor.client.config.MercantorDiscoveryClientConfig
+import org.junit.Assert.assertNotNull
 import org.junit.Test
+import org.mockito.Mock
 
 /**
  * @author Felix Klauke <fklauke@itemis.de>
  */
 class MercantorDiscoveryClientFactoryTest {
 
-    @Before
-    fun setUp() {
-    }
-
-    @After
-    fun tearDown() {
-    }
+    @Mock lateinit var config: MercantorDiscoveryClientConfig
 
     @Test
     fun createDiscoveryClient() {
+        val createDiscoveryClient = MercantorDiscoveryClientFactory.createDiscoveryClient(config)
+        assertNotNull(createDiscoveryClient)
     }
 }
