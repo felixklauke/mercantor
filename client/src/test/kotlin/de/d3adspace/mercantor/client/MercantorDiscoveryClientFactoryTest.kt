@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.client
 
-import org.junit.After
-import org.junit.Before
+import de.d3adspace.mercantor.client.config.MercantorDiscoveryClientConfig
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 
 /**
@@ -9,15 +9,11 @@ import org.junit.Test
  */
 class MercantorDiscoveryClientFactoryTest {
 
-    @Before
-    fun setUp() {
-    }
-
-    @After
-    fun tearDown() {
-    }
+    private val config: MercantorDiscoveryClientConfig = MercantorDiscoveryClientConfig()
 
     @Test
     fun createDiscoveryClient() {
+        val createDiscoveryClient = MercantorDiscoveryClientFactory.createDiscoveryClient(config)
+        assertNotNull(createDiscoveryClient)
     }
 }
