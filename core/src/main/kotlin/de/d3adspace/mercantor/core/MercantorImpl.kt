@@ -1,59 +1,58 @@
 package de.d3adspace.mercantor.core
 
-import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
-import de.d3adspace.mercantor.commons.model.service.ServiceClusterModel
-import de.d3adspace.mercantor.commons.model.service.ServiceModel
-import de.d3adspace.mercantor.core.service.ServiceManager
+import de.d3adspace.mercantor.commons.model.HeartbeatModel
+import de.d3adspace.mercantor.commons.model.ServiceModel
+import de.d3adspace.mercantor.commons.model.ServiceStatus
+import de.d3adspace.mercantor.core.service.ServiceRepository
+import io.reactivex.functions.Consumer
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class MercantorImpl(private val serviceManager: ServiceManager) : Mercantor {
+class MercantorImpl(private val serviceRepository: ServiceRepository) : Mercantor {
 
-    /**
-     * The logger to log all general actions on services.
-     */
     private val logger = LoggerFactory.getLogger(MercantorImpl::class.java)
 
-    override fun getServices(vipAddress: String, limit: Int): ServiceClusterModel {
-        logger.info("Querying vip address group $vipAddress.")
+    init {
+        serviceRepository.getServiceExpiration().subscribe(this::handleExpiration)
+    }
 
-        return when (limit) {
-            -1 -> ServiceClusterModel(serviceManager.getServices(vipAddress))
-            else -> ServiceClusterModel(serviceManager.getServices(vipAddress).shuffled().take(limit))
+    override fun registerService(service: ServiceModel) {
+        logger.info("Registering new instance for vip address ${service.vipAddress}.")
+
+        serviceRepository.register(service)
+
+        logger.info("Registered new instance for vip address ${service.vipAddress} with instance id ${service.instanceId}")
+    }
+
+    override fun serviceExists(instanceId: UUID): Boolean {
+        return serviceRepository.exists(instanceId)
+    }
+
+    override fun deleteService(instanceId: UUID) {
+        logger.info("Invalidating instance with id $instanceId.")
+
+        serviceRepository.delete(instanceId)
+
+        logger.info("Invalidated instance with id $instanceId")
+    }
+
+    override fun handleHeartbeat(heartbeat: HeartbeatModel) {
+        logger.info("Got heartbeat from instance with id ${heartbeat.instanceId}")
+
+        serviceRepository.updateStatus(heartbeat.instanceId, heartbeat.status)
+    }
+
+    override fun getService(vipAddress: String): List<ServiceModel> {
+        logger.info("Querying instances behind vip address $vipAddress.")
+
+        return serviceRepository.getService(vipAddress).filter { serviceModel ->
+            serviceModel.status == ServiceStatus.UP
         }
     }
 
-    override fun invalidateService(serviceId: UUID) {
-        logger.info("Invalidating service with service id $serviceId.")
+    private fun handleExpiration(service: ServiceModel) {
+        logger.info("The service ${service.instanceId} expired.")
 
-        serviceManager.invalidate(serviceId)
-    }
-
-    override fun handleServiceHeartBeat(heartBeat: HeartBeat) {
-        logger.info("Received heartbeat for service ${heartBeat.getServiceId()}.")
-
-        serviceManager.handleHeartBeat(heartBeat)
-    }
-
-    override fun getService(vipAddress: String): ServiceModel {
-        logger.info("Querying single service for $vipAddress")
-
-        return serviceManager.getService(vipAddress)
-    }
-
-    override fun invalidateService(service: ServiceModel) {
-        logger.info("Invalidating service ${service.getId()}")
-
-        serviceManager.invalidate(service)
-    }
-
-    override fun registerService(service: ServiceModel): ServiceModel {
-        logger.info("Registering service for ${service.getVipAddress()}.")
-
-        val registeredService = serviceManager.register(service)
-
-        logger.info("The new service got the id ${registeredService.getId()}")
-
-        return registeredService
+        service.status = ServiceStatus.OUT_OF_SERVICE
     }
 }
