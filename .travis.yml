@@ -7,5 +7,6 @@ script:
   - gradle build
   - gradle test
   - gradle codeCoverageReport
+  - gradle jacocoTestReport
 after_success:
   - bash <(curl -s https://codecov.io/bash)
