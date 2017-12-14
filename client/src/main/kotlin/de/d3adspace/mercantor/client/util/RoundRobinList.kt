@@ -9,17 +9,13 @@ class RoundRobinList<ContentType>(private val content: MutableList<ContentType>)
     val isEmpty: Boolean
         get() = content.isEmpty()
 
-    fun getContent(): List<ContentType> {
-        return content
-    }
+    fun getContent(): List<ContentType> = content
 
-    fun size(): Int {
-        return content.size
-    }
+    fun size(): Int = content.size
 
-    fun add(element: ContentType): Boolean {
-        return content.add(element)
-    }
+    fun add(element: ContentType): Boolean = content.add(element)
+
+    fun remove(element: ContentType) = content.remove(element)
 
     fun get(): ContentType {
         if (content.isEmpty()) {
@@ -35,9 +31,5 @@ class RoundRobinList<ContentType>(private val content: MutableList<ContentType>)
         currentPosition++
 
         return element
-    }
-
-    fun remove(element: ContentType) {
-        content.remove(element)
     }
 }
