@@ -1,6 +1,5 @@
-description = ''
 dependencies {
-    compile project(':mercantor-core')
+    compile project(':core')
     compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-grizzly2-http', version: '2.26'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
     compile group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '2.26'

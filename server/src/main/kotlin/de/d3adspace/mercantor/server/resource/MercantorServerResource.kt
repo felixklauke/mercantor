@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.server.resource
 
-import de.d3adspace.mercantor.commons.model.heartbeat.HeartBeat
-import de.d3adspace.mercantor.commons.model.service.ServiceModel
+import de.d3adspace.mercantor.commons.model.HeartbeatModel
+import de.d3adspace.mercantor.commons.model.ServiceModel
 import de.d3adspace.mercantor.core.Mercantor
 import org.glassfish.jersey.server.ManagedAsync
 import java.util.*
@@ -32,9 +32,16 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @Path("/service/heartbeat")
     @Consumes(MediaType.APPLICATION_JSON)
     @ManagedAsync
-    fun handleHeartBeat(@Suspended requestContext: AsyncResponse, heartBeat: HeartBeat) {
-        mercantor.handleServiceHeartBeat(heartBeat)
+    fun handleHeartBeat(@Suspended requestContext: AsyncResponse, heartBeat: HeartbeatModel) {
+        val instanceId = heartBeat.instanceId
 
+        if (!mercantor.serviceExists(instanceId)) {
+            val response = Response.status(Response.Status.INTERNAL_SERVER_ERROR.statusCode, "There is no instance with the id $instanceId.").build()
+            requestContext.resume(response)
+            return
+        }
+
+        mercantor.handleHeartbeat(heartBeat)
         val response = Response.ok().build()
         requestContext.resume(response)
     }
@@ -45,7 +52,7 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @ManagedAsync
     fun invalidateService(@Suspended requestContext: AsyncResponse, @PathParam("serviceId") serviceId: String) {
         val uuid = UUID.fromString(serviceId)
-        mercantor.invalidateService(uuid)
+        mercantor.deleteService(uuid)
 
         val response = Response.ok().build()
         requestContext.resume(response)
@@ -55,17 +62,16 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @Path("/service/get/{vipAddress}")
     @Produces(MediaType.APPLICATION_JSON)
     @ManagedAsync
-    fun getServices(@Suspended requestContext: AsyncResponse, @PathParam("vipAddress") vipAddress: String, @QueryParam("limit") limit: Int) {
-        val response: Response
+    fun getServices(@Suspended requestContext: AsyncResponse, @PathParam("vipAddress") vipAddress: String) {
+        val services = mercantor.getService(vipAddress)
 
-        response = if (limit == 1 || limit == 0) {
-            val service = mercantor.getService(vipAddress)
-            Response.ok().entity(service).build()
-        } else {
-            val services = mercantor.getServices(vipAddress, limit)
-            Response.ok().entity(services).build()
+        if (services.isEmpty()) {
+            val response = Response.status(Response.Status.NOT_FOUND).build()
+            requestContext.resume(response)
+            return
         }
 
+        val response = Response.ok().entity(services).build()
         requestContext.resume(response)
     }
 }

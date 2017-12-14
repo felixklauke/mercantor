@@ -1,6 +1,6 @@
 package de.d3adspace.mercantor.core
 
-import de.d3adspace.mercantor.core.service.ServiceManagerFactory
+import de.d3adspace.mercantor.core.service.ServiceRepositoryImpl
 
 /**
  * @author Felix Klauke <fklauke@itemis.de>
@@ -8,6 +8,7 @@ import de.d3adspace.mercantor.core.service.ServiceManagerFactory
 object MercantorFactory {
 
     fun createMercantor(): Mercantor {
-        return MercantorImpl(ServiceManagerFactory.createServiceManager())
+        val serviceRepository = ServiceRepositoryImpl()
+        return MercantorImpl(serviceRepository)
     }
 }

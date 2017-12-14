@@ -12,7 +12,6 @@ import java.net.URI
  * @author Felix Klauke <fklauke@itemis.de>
  */
 class JerseyRestManager(private val mercantor: Mercantor, private val config: MercantorServerConfig) : RestManager {
-
     private lateinit var httpServer: HttpServer
 
     override fun startService() {
