@@ -14,6 +14,8 @@ allprojects {
     apply plugin: 'kotlin'
     apply plugin: 'java'
 
+    apply plugin: 'jacoco'
+
     repositories {
         mavenCentral()
     }
@@ -33,3 +35,17 @@ allprojects {
         }
     }
 }
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
+    reports {
+        xml.destination new File("${buildDir}/reports/jacoco/report.xml")
+    }
+}
+
+codeCoverageReport.dependsOn('subprojects*.testClasses')
