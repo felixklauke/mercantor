@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.client
 
-import org.junit.After
-import org.junit.Before
+import de.d3adspace.mercantor.client.config.MercantorDiscoveryClientConfig
+import de.d3adspace.mercantor.client.exception.NoSuchServiceException
 import org.junit.Test
 
 /**
@@ -9,15 +9,10 @@ import org.junit.Test
  */
 class MercantorDiscoveryClientImplTest {
 
-    @Before
-    fun setUp() {
-    }
+    private val discoveryClient = MercantorDiscoveryClientFactory.createDiscoveryClient(MercantorDiscoveryClientConfig())
 
-    @After
-    fun tearDown() {
-    }
-
-    @Test
+    @Test(expected = NoSuchServiceException::class)
     fun discoverService() {
+        discoveryClient.discoverService("de.test")
     }
 }
