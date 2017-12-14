@@ -47,4 +47,6 @@ task codeCoverageReport(type: JacocoReport) {
     }
 }
 
-codeCoverageReport.dependsOn('subprojects*.testClasses')
+codeCoverageReport.dependsOn {
+    subprojects*.test
+}
