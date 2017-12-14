@@ -4,7 +4,6 @@ import de.d3adspace.mercantor.commons.model.HeartbeatModel
 import de.d3adspace.mercantor.commons.model.ServiceModel
 import de.d3adspace.mercantor.commons.model.ServiceStatus
 import de.d3adspace.mercantor.core.service.ServiceRepository
-import io.reactivex.functions.Consumer
 import org.slf4j.LoggerFactory
 import java.util.*
 

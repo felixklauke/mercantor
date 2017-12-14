@@ -4,7 +4,6 @@ import de.d3adspace.mercantor.commons.model.HeartbeatModel
 import de.d3adspace.mercantor.commons.model.ServiceModel
 import de.d3adspace.mercantor.commons.model.ServiceStatus
 import io.reactivex.Observable
-import io.reactivex.rxkotlin.Observables
 import io.reactivex.subjects.BehaviorSubject
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -15,7 +14,7 @@ class ServiceRepositoryImpl : ServiceRepository {
     private val services: Map<UUID, ServiceModel> = ConcurrentHashMap()
 
     override fun getServiceExpiration(): Observable<ServiceModel> {
-        return null!!
+        return Observable.create { }
     }
 
     override fun exists(instanceId: UUID): Boolean {
@@ -35,6 +34,6 @@ class ServiceRepositoryImpl : ServiceRepository {
     }
 
     override fun getService(vipAddress: String): List<ServiceModel> {
-        return null!!
+        return Collections.emptyList()
     }
 }
