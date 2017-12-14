@@ -26,15 +26,7 @@ object MercantorServerBootstrap {
 
         val mercantor = MercantorFactory.createMercantor()
         val restManager = RestManagerFactory.createRestManager(mercantor, config)
-
-        val randomUUID = UUID.randomUUID()
-        mercantor.registerService(ServiceModel(UUID.randomUUID(), "de.felix-klauke.de", "0.0.0.0", "falafel.de", 2, "Test", ServiceStatus.UP, emptyMap()))
-        mercantor.registerService(ServiceModel(randomUUID, "de.felix-klauke.de", "0.0.0.0", "falafel.de", 2, "Test", ServiceStatus.UP, emptyMap()))
-
         restManager.startService()
-
-        Thread.sleep(3000)
-        mercantor.handleHeartbeat(HeartbeatModel(ServiceStatus.UP, randomUUID))
     }
 
     private fun readConfig(): MercantorServerConfig {
