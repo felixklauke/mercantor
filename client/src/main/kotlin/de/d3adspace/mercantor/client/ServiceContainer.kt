@@ -19,19 +19,25 @@ class ServiceContainer(private val vipAddress: String, private val serviceLoader
                 serviceModelListSubject = BehaviorSubject.create()
 
                 loadServices()
+
                 serviceModelListSubject.onNext(serviceModels)
+
+                startPolling()
             }
 
             return serviceModelListSubject
         }
 
-    private fun loadServices() {
-        serviceModels = serviceLoader.loadServices(vipAddress).blockingFirst()
-
-        val observable = Observable.interval(30, TimeUnit.SECONDS)
-                .map {
-                    return@map serviceLoader.loadServices(vipAddress).blockingLast()
-                }
+    private fun startPolling() {
+        val observable = Observable.interval(30, TimeUnit.SECONDS).map { fetchServices() }
         observable.subscribe(serviceModelListSubject)
+    }
+
+    private fun loadServices() {
+        serviceModels = fetchServices()
+    }
+
+    private fun fetchServices(): List<ServiceModel> {
+        return serviceLoader.loadServices(vipAddress).blockingLast()
     }
 }
