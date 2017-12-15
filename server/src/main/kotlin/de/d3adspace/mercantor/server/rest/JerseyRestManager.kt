@@ -22,8 +22,8 @@ class JerseyRestManager(private val mercantor: Mercantor, private val config: Me
     }
 
     override fun stopService() {
-        httpServer.shutdown()
+        httpServer.shutdownNow()
     }
 
-    override fun isServiceRunning(): Boolean = httpServer.isStarted
+    override fun isServiceRunning(): Boolean = this::httpServer.isInitialized && httpServer.isStarted
 }

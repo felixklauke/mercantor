@@ -12,7 +12,7 @@ import java.util.*
 import javax.ws.rs.container.AsyncResponse
 
 /**
- * @author Felix Klauke <fklaukeitemis.de>
+ * @author Felix Klauke <fklauke@itemis.de>
  */
 class MercantorServerResourceTest {
 
