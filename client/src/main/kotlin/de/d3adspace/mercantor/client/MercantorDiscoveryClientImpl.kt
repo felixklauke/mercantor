@@ -6,9 +6,9 @@ import de.d3adspace.mercantor.client.util.RoundRobinList
 import de.d3adspace.mercantor.commons.model.ServiceModel
 import java.util.concurrent.ConcurrentHashMap
 
-class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: MercantorDiscoveryClientConfig) : MercantorDiscoveryClient {
+class MercantorDiscoveryClientImpl(mercantorDiscoveryClientConfig: MercantorDiscoveryClientConfig) : MercantorDiscoveryClient {
 
-    private val serviceLoader: ServiceLoader = ServiceLoader()
+    private val serviceLoader: ServiceLoader = ServiceLoader(mercantorDiscoveryClientConfig)
     private val currentServices: MutableMap<String, RoundRobinList<ServiceModel>> = ConcurrentHashMap()
 
     override fun discoverService(vipAddress: String): ServiceModel {
@@ -26,9 +26,16 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
     }
 
     private fun fetchServices(vipAddress: String) {
-        val services: List<ServiceModel> = serviceLoader.loadServices(vipAddress)
+        val serviceContainer = ServiceContainer(vipAddress, serviceLoader)
+        serviceContainer.services.subscribe({
+            if (!currentServices.containsKey(vipAddress)) {
+                val roundRobinList = RoundRobinList(it.toMutableList())
+                currentServices.put(vipAddress, roundRobinList)
+                return@subscribe
+            }
 
-        val roundRobinList = RoundRobinList(services.toMutableList())
-        currentServices.put(vipAddress, roundRobinList)
+            val roundRobinList = currentServices[vipAddress] ?: throw IllegalStateException()
+            roundRobinList.setContent(it.toMutableList())
+        })
     }
 }
