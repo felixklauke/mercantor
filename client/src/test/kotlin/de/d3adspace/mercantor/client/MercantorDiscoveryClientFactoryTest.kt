@@ -9,7 +9,7 @@ import org.junit.Test
  */
 class MercantorDiscoveryClientFactoryTest {
 
-    private val config: MercantorDiscoveryClientConfig = MercantorDiscoveryClientConfig()
+    private val config: MercantorDiscoveryClientConfig = MercantorDiscoveryClientConfig("http://localhost:8080")
 
     @Test
     fun createDiscoveryClient() {
