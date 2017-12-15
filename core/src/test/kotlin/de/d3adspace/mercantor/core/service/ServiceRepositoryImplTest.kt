@@ -1,23 +1,34 @@
 package de.d3adspace.mercantor.core.service
 
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.util.*
 
 /**
  * @author Felix Klauke <fklauke@itemis.de>
  */
 class ServiceRepositoryImplTest {
 
+    private lateinit var serviceRepository: ServiceRepository
+
     @Before
     fun setUp() {
+        serviceRepository = ServiceRepositoryImpl()
     }
 
     @Test
     fun getServiceExpiration() {
+        val serviceExpiration = serviceRepository.getServiceExpiration()
+
+        Assert.assertNotNull(serviceExpiration)
     }
 
     @Test
     fun exists() {
+        val exists = serviceRepository.exists(UUID.randomUUID())
+
+        Assert.assertFalse(exists)
     }
 
     @Test
