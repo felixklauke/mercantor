@@ -31,7 +31,6 @@ class ServiceRepositoryImpl : ServiceRepository {
         heartbeats.filter { model -> model.instanceId == service.instanceId }
                 .timeout(30, TimeUnit.SECONDS)
                 .subscribe({ heartbeat ->
-                    logger.info("Got heartbeat from ${service.instanceId}.")
                     service.status = heartbeat.status
                 }, {
                     expirationPublisher.onNext(service)
