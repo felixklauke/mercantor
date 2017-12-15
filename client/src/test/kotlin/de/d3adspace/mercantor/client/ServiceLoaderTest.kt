@@ -9,7 +9,6 @@ import org.mockito.Mock
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
-import java.net.ConnectException
 
 /**
  * @author Felix Klauke <fklauke@itemis.de>
@@ -29,7 +28,7 @@ class ServiceLoaderTest {
         PowerMockito.whenNew(JerseyClient::class.java).withAnyArguments().thenReturn(client)
     }
 
-    @Test(expected = ConnectException::class)
+    @Test
     fun loadServices() {
         val testKey = "testVipAddress"
 
