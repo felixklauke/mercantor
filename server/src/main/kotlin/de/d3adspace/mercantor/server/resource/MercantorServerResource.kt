@@ -28,7 +28,7 @@ class MercantorServerResource(private val mercantor: Mercantor) {
         requestContext.resume(response)
     }
 
-    @PUT
+    @POST
     @Path("/service/heartbeat")
     @Consumes(MediaType.APPLICATION_JSON)
     @ManagedAsync
