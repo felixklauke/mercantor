@@ -6,7 +6,7 @@ import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 
 /**
- * @author Felix Klauke <fklauke></fklauke>@itemis.de>
+ * @author Felix Klauke <fklauke@itemis.de>
  */
 class ServiceContainer(private val vipAddress: String, private val serviceLoader: ServiceLoader) {
 
