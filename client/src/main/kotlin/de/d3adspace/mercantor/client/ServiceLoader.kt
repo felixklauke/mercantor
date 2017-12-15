@@ -11,13 +11,12 @@ import javax.ws.rs.core.MediaType
 /**
  * @author Felix Klauke <fklauke@itemis.de>
  */
-class ServiceLoader(private val mercantorDiscoveryClientConfig: MercantorDiscoveryClientConfig) {
+open class ServiceLoader(private val mercantorDiscoveryClientConfig: MercantorDiscoveryClientConfig) {
 
     private val client: Client = ClientBuilder.newBuilder().register(GsonJaxRSProvider()).build()
 
     fun loadServices(vipAddress: String): Observable<List<ServiceModel>> {
-        val responseFuture = client
-                .target(mercantorDiscoveryClientConfig.server + "/v1/service/get/{vipAddress}")
+        val responseFuture = client.target(mercantorDiscoveryClientConfig.server + "/v1/service/get/{vipAddress}")
                 .resolveTemplate("vipAddress", vipAddress)
                 .request(MediaType.APPLICATION_JSON)
                 .async().get()
