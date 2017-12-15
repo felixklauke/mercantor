@@ -51,6 +51,12 @@ class MercantorServerResource(private val mercantor: Mercantor) {
     @Consumes(MediaType.APPLICATION_JSON)
     @ManagedAsync
     fun invalidateService(@Suspended requestContext: AsyncResponse, @PathParam("instanceId") instanceId: UUID) {
+        if (!mercantor.serviceExists(instanceId)) {
+            val response = Response.noContent().build()
+            requestContext.resume(response)
+            return
+        }
+
         mercantor.deleteService(instanceId)
 
         val response = Response.ok().build()
