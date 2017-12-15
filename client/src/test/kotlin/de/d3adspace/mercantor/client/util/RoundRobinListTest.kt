@@ -3,6 +3,7 @@ package de.d3adspace.mercantor.client.util
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import java.util.*
 
 /**
  * @author Felix Klauke <fklauke@itemis.de>
@@ -28,6 +29,15 @@ class RoundRobinListTest {
         list.remove(2)
         list.remove(3)
         assert(list.isEmpty)
+    }
+
+    @Test
+    fun setContent() {
+        val newList = Arrays.asList(1, 3, 9, 7)
+        list.setContent(newList)
+
+        assertArrayEquals(newList.toIntArray(), list.getContent().toIntArray())
+        assertEquals(newList, list.getContent())
     }
 
     @Test
