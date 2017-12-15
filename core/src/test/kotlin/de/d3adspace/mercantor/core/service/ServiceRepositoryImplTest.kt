@@ -4,7 +4,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * @author Felix Klauke <fklauke></fklauke>@itemis.de>
+ * @author Felix Klauke <fklauke@itemis.de>
  */
 class ServiceRepositoryImplTest {
 
