@@ -43,8 +43,11 @@ class MercantorImpl(private val serviceRepository: ServiceRepository) : Mercanto
 
     override fun getService(vipAddress: String): List<ServiceModel> {
         logger.info("Querying instances behind vip address $vipAddress.")
+        val service = serviceRepository.getService(vipAddress)
+        logger.info("We currently know about of ${service.size} instances for $vipAddress.")
 
-        return serviceRepository.getService(vipAddress).filter { serviceModel ->
+
+        return service.filter { serviceModel ->
             serviceModel.status == ServiceStatus.UP
         }
     }

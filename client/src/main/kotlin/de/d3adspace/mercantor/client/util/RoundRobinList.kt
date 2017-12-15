@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.client.util
 
 /**
- * @author Felix Klauke <fklauke></fklauke>@itemis.de>
+ * @author Felix Klauke <fklauke@itemis.de>
  */
 class RoundRobinList<ContentType>(private val content: MutableList<ContentType>) {
     private var currentPosition: Int = 0
@@ -27,6 +27,8 @@ class RoundRobinList<ContentType>(private val content: MutableList<ContentType>)
         }
 
         val element = content[currentPosition]
+
+        println("Element: " + element)
 
         currentPosition++
 

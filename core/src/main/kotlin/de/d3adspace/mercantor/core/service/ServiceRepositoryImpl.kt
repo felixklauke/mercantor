@@ -16,7 +16,7 @@ class ServiceRepositoryImpl : ServiceRepository {
     private val logger = LoggerFactory.getLogger(ServiceRepositoryImpl::class.java)
 
     private val expirationPublisher: PublishSubject<ServiceModel> = PublishSubject.create()
-    private val services: Map<UUID, ServiceModel> = ConcurrentHashMap()
+    private val services: MutableMap<UUID, ServiceModel> = ConcurrentHashMap()
     private val heartbeats: BehaviorSubject<HeartbeatModel> = BehaviorSubject.create()
 
     override fun getServiceExpiration(): Observable<ServiceModel> {
@@ -29,7 +29,7 @@ class ServiceRepositoryImpl : ServiceRepository {
 
     override fun register(service: ServiceModel) {
         heartbeats.filter { model -> model.instanceId == service.instanceId }
-                .timeout(10, TimeUnit.SECONDS)
+                .timeout(30, TimeUnit.SECONDS)
                 .subscribe({ heartbeat ->
                     logger.info("Got heartbeat from ${service.instanceId}.")
                     service.status = heartbeat.status
@@ -37,6 +37,10 @@ class ServiceRepositoryImpl : ServiceRepository {
                     expirationPublisher.onNext(service)
                     service.status = ServiceStatus.OUT_OF_SERVICE
                 })
+
+        logger.info("Taking the service ${service.instanceId} for ${service.vipAddress} into our repository.")
+        services.put(service.instanceId, service)
+        logger.info("We now have a total of ${services.size} services.")
     }
 
     override fun delete(instanceId: UUID) {
@@ -48,6 +52,8 @@ class ServiceRepositoryImpl : ServiceRepository {
     }
 
     override fun getService(vipAddress: String): List<ServiceModel> {
-        return Collections.emptyList()
+        return services.values.filter { serviceModel ->
+            serviceModel.vipAddress == vipAddress
+        }
     }
 }
