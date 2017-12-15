@@ -70,7 +70,7 @@ class MercantorServerResource(private val mercantor: Mercantor) {
             return
         }
 
-        val response = Response.ok().entity(services).build()
+        val response = Response.ok().entity(services.toTypedArray()).build()
         requestContext.resume(response)
     }
 }
