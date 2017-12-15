@@ -31,7 +31,7 @@ class ServiceContainerTest {
         serviceContainer = ServiceContainer(testVipAddress, serviceLoader)
     }
 
-    @Test
+    @Test(expected = RuntimeException::class)
     fun getServices() {
         val serviceObservable = serviceContainer.services
 

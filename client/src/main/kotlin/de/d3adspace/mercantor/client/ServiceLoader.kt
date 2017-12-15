@@ -4,6 +4,7 @@ import de.d3adspace.mercantor.client.config.MercantorDiscoveryClientConfig
 import de.d3adspace.mercantor.commons.codec.GsonJaxRSProvider
 import de.d3adspace.mercantor.commons.model.ServiceModel
 import io.reactivex.Observable
+import org.glassfish.jersey.client.ClientProperties
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.core.MediaType
@@ -14,6 +15,11 @@ import javax.ws.rs.core.MediaType
 open class ServiceLoader(private val mercantorDiscoveryClientConfig: MercantorDiscoveryClientConfig) {
 
     private val client: Client = ClientBuilder.newBuilder().register(GsonJaxRSProvider()).build()
+
+    init {
+        client.property(ClientProperties.CONNECT_TIMEOUT, 1000)
+        client.property(ClientProperties.READ_TIMEOUT, 1000)
+    }
 
     fun loadServices(vipAddress: String): Observable<List<ServiceModel>> {
         val responseFuture = client.target(mercantorDiscoveryClientConfig.server + "/v1/service/get/{vipAddress}")
