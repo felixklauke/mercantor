@@ -43,7 +43,7 @@ class ServiceRepositoryImpl : ServiceRepository {
     }
 
     override fun delete(instanceId: UUID) {
-
+        services.remove(instanceId)
     }
 
     override fun updateStatus(heartbeat: HeartbeatModel) {
