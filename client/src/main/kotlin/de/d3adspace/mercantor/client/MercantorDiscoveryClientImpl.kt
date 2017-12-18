@@ -2,6 +2,7 @@ package de.d3adspace.mercantor.client
 
 import de.d3adspace.mercantor.client.config.MercantorDiscoveryClientConfig
 import de.d3adspace.mercantor.client.exception.NoSuchServiceException
+import de.d3adspace.mercantor.client.result.DiscoveryResult
 import de.d3adspace.mercantor.client.util.RoundRobinList
 import de.d3adspace.mercantor.commons.model.ServiceModel
 import de.d3adspace.mercantor.commons.model.ServiceStatus
@@ -38,7 +39,7 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
     /**
      * Discover an instance of the given service.
      */
-    override fun discoverService(vipAddress: String): ServiceModel {
+    override fun discoverService(vipAddress: String): DiscoveryResult {
         logger.info("Discovering service for $vipAddress.")
 
         if (!currentServices.containsKey(vipAddress)) {
@@ -52,7 +53,8 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
             throw NoSuchServiceException("I don't own any services for $vipAddress")
         }
 
-        return services.get()
+        val model = services.get()
+        return DiscoveryResult(model.instanceId, model.hostName, model.ipAddress, model.port)
     }
 
     /**

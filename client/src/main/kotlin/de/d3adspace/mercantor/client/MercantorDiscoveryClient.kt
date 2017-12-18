@@ -1,6 +1,6 @@
 package de.d3adspace.mercantor.client
 
-import de.d3adspace.mercantor.commons.model.ServiceModel
+import de.d3adspace.mercantor.client.result.DiscoveryResult
 import io.reactivex.Observable
 import java.util.*
 
@@ -9,7 +9,7 @@ import java.util.*
  */
 interface MercantorDiscoveryClient {
 
-    fun discoverService(vipAddress: String): ServiceModel
+    fun discoverService(vipAddress: String): DiscoveryResult
 
     fun registerService(vipAddress: String, name: String, host: String, ipAddress: String, port: Int, metaData: Map<String, Any>): Observable<UUID>
 
