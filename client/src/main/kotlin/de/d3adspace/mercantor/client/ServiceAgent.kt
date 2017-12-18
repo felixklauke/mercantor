@@ -39,7 +39,7 @@ class ServiceAgent(private val mercantorDiscoveryClientConfig: MercantorDiscover
     private val client: Client = ClientBuilder.newBuilder().register(GsonJaxRSProvider()).build()
 
     /**
-     * The dsipose bag for all subscriptions.
+     * The dispose bag for all subscriptions.
      */
     private var compositeDisposable = CompositeDisposable()
 
@@ -70,13 +70,12 @@ class ServiceAgent(private val mercantorDiscoveryClientConfig: MercantorDiscover
     /**
      * Let the heart begin beating.
      *
-     * Theh heartbeats will be sent until the service model isn't marked as UP anymore.
+     * The heartbeats will be sent until the service model isn't marked as UP anymore.
      */
     fun startHeartbeats() {
         logger.info("Starting heartbeat background service for ${model.instanceId}.")
 
         val subscription = Observable.interval(10, TimeUnit.SECONDS)
-                .takeUntil { model.status != ServiceStatus.UP }
                 .map { sendHeartBeat() }.subscribe()
         compositeDisposable.add(subscription)
     }
@@ -85,9 +84,9 @@ class ServiceAgent(private val mercantorDiscoveryClientConfig: MercantorDiscover
      * Send a single heartbeat.
      */
     private fun sendHeartBeat() {
-        logger.info("Sending heartbeat for ${model.instanceId}.")
+        logger.info("Sending heartbeat for ${model.instanceId}. Current status: ${model.status}.")
 
-        val model = HeartbeatModel(ServiceStatus.UP, model.instanceId)
+        val model = HeartbeatModel(model.status, model.instanceId)
         val responseFuture = client.target(mercantorDiscoveryClientConfig.server + "/v1/service/heartbeat")
                 .request(MediaType.APPLICATION_JSON)
                 .async().post(Entity.json(model))
