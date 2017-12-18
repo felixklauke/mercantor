@@ -10,14 +10,34 @@ import org.slf4j.LoggerFactory
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * The default implementation of the discovery client.
+ */
 class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: MercantorDiscoveryClientConfig) : MercantorDiscoveryClient {
 
+    /**
+     * The logger of all actions.
+     */
     private val logger = LoggerFactory.getLogger(MercantorDiscoveryClientImpl::class.java)
 
+    /**
+     * The service loader.
+     */
     private val serviceLoader: ServiceLoader = ServiceLoader(mercantorDiscoveryClientConfig)
+
+    /**
+     * All currently loaded services.
+     */
     private val currentServices: MutableMap<String, RoundRobinList<ServiceModel>> = ConcurrentHashMap()
+
+    /**
+     * All currently active agents.
+     */
     private val currentAgents: MutableMap<UUID, ServiceAgent> = ConcurrentHashMap()
 
+    /**
+     * Discover an instance of the given service.
+     */
     override fun discoverService(vipAddress: String): ServiceModel {
         logger.info("Discovering service for $vipAddress.")
 
@@ -35,6 +55,9 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
         return services.get()
     }
 
+    /**
+     * Fetch the instances for the given service.
+     */
     private fun fetchServices(vipAddress: String) {
         logger.info("Beginning fetching from remote for $vipAddress.")
 
@@ -43,26 +66,31 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
                 .subscribe({
                     logger.info("Got an update for $vipAddress.")
 
-            if (!currentServices.containsKey(vipAddress)) {
-                val roundRobinList = RoundRobinList(it.toMutableList())
-                currentServices.put(vipAddress, roundRobinList)
-                return@subscribe
-            }
+                    if (!currentServices.containsKey(vipAddress)) {
+                        val roundRobinList = RoundRobinList(it.toMutableList())
+                        currentServices.put(vipAddress, roundRobinList)
+                        return@subscribe
+                    }
 
-            val roundRobinList = currentServices[vipAddress] ?: throw IllegalStateException()
-            roundRobinList.setContent(it.toMutableList())
-        })
+                    val roundRobinList = currentServices[vipAddress] ?: throw IllegalStateException()
+                    roundRobinList.setContent(it.toMutableList())
+                })
     }
 
+    /**
+     * Register a new service instance for the given data.
+     */
     override fun registerService(vipAddress: String, name: String, host: String, ipAddress: String, port: Int, metaData: Map<String, Any>): Observable<UUID> {
         logger.info("Registering service for $vipAddress named $name that can be found at $host or $ipAddress:$port.")
 
-        val model = ServiceModel(UUID.randomUUID(), vipAddress, ipAddress, host, port, name, ServiceStatus.UP, metaData)
+        val model = ServiceModel(UUID.randomUUID(), vipAddress, ipAddress, host, port, name, ServiceStatus.STARTING_UP, metaData)
         val serviceAgent = ServiceAgent(mercantorDiscoveryClientConfig, model)
 
         val serviceObservable = serviceAgent.registerService()
 
         serviceObservable.subscribe {
+            model.status = ServiceStatus.UP
+
             serviceAgent.startHeartbeats()
 
             logger.info("Registered service for $vipAddress. It got the instance id ${model.instanceId}")
@@ -73,9 +101,13 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
         return serviceObservable
     }
 
+    /**
+     * Unregister the instance behind the given instance id.
+     */
     override fun unregisterService(instanceId: UUID) {
         logger.info("Unregistering service with instance id $instanceId.")
 
         currentAgents[instanceId]?.destroy()
+        currentAgents.remove(instanceId)
     }
 }

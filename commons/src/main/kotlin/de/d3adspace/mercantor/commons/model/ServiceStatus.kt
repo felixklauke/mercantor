@@ -7,5 +7,6 @@ enum class ServiceStatus {
     UP,
     DOWN,
     OUT_OF_SERVICE,
-    UNKNOWN
+    UNKNOWN,
+    STARTING_UP
 }
