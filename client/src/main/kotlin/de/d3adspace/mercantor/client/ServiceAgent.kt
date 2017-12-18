@@ -59,6 +59,13 @@ class ServiceAgent(private val mercantorDiscoveryClientConfig: MercantorDiscover
     }
 
     fun destroy() {
+        logger.info("Unregistering service ${model.instanceId}.")
+
         model.status = ServiceStatus.DOWN
+
+        client.target(mercantorDiscoveryClientConfig.server + "/v1/service/invalidate/{instanceId}")
+                .resolveTemplate("instanceId", model.instanceId)
+                .request(MediaType.APPLICATION_JSON)
+                .async().delete()
     }
 }
