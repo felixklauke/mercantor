@@ -5,7 +5,7 @@ import java.util.*
 /**
  * @author Felix Klauke <fklauke@itemis.de>
  */
-data class ServiceModel(val instanceId: UUID = UUID.randomUUID(),
+data class ServiceModel(var instanceId: UUID = UUID.randomUUID(),
                         val vipAddress: String = "de.d3adspace.service.invalid",
                         val ipAddress: String = "0.0.0.0",
                         val hostName: String = "localhost",
