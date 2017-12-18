@@ -1,17 +1,11 @@
 package de.d3adspace.mercantor.server
 
 import com.google.gson.GsonBuilder
-import de.d3adspace.mercantor.commons.model.HeartbeatModel
-import de.d3adspace.mercantor.commons.model.ServiceModel
-import de.d3adspace.mercantor.commons.model.ServiceStatus
 import de.d3adspace.mercantor.core.MercantorFactory
 import de.d3adspace.mercantor.server.config.MercantorServerConfig
 import de.d3adspace.mercantor.server.rest.RestManagerFactory
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 /**
  * The central bootstrap of the server functionality.
@@ -27,15 +21,6 @@ object MercantorServerBootstrap {
         val config = readConfig()
 
         val mercantor = MercantorFactory.createMercantor()
-
-        val randomUUID = UUID.randomUUID()
-        mercantor.registerService(ServiceModel(randomUUID, "de.felix_klauke.cool",
-                "0.0.0.0", "felix-klauke.de", 8080, "CoolerService",
-                ServiceStatus.UP, emptyMap()))
-
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate({
-            mercantor.handleHeartbeat(HeartbeatModel(ServiceStatus.UP, randomUUID))
-        }, 1, 15, TimeUnit.SECONDS)
 
         val restManager = RestManagerFactory.createRestManager(mercantor, config)
         restManager.startService()

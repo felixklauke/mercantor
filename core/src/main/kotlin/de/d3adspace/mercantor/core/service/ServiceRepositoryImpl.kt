@@ -29,7 +29,7 @@ class ServiceRepositoryImpl : ServiceRepository {
 
     override fun register(service: ServiceModel) {
         heartbeats.filter { model -> model.instanceId == service.instanceId }
-                .timeout(30, TimeUnit.SECONDS)
+                .timeout(15, TimeUnit.SECONDS)
                 .subscribe({ heartbeat ->
                     service.status = heartbeat.status
                 }, {
