@@ -4,3 +4,6 @@ include 'client'
 include 'core'
 include 'commons'
 include 'server'
+include 'client-example'
+findProject(':client-example')?.name = 'mercantor-client-example'
+
