@@ -9,7 +9,7 @@ import java.util.*
  */
 interface MercantorDiscoveryClient {
 
-    fun discoverService(vipAddress: String): DiscoveryResult
+    fun discoverService(vipAddress: String): Observable<DiscoveryResult>
 
     fun registerService(vipAddress: String, name: String, host: String, ipAddress: String, port: Int, metaData: Map<String, Any>): Observable<UUID>
 
