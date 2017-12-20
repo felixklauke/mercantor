@@ -8,6 +8,7 @@ import de.d3adspace.mercantor.commons.model.ServiceModel
 import de.d3adspace.mercantor.commons.model.ServiceStatus
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import org.slf4j.LoggerFactory
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -40,12 +41,28 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
     /**
      * Discover an instance of the given service.
      */
-    override fun discoverService(vipAddress: String): DiscoveryResult {
+    override fun discoverService(vipAddress: String): Observable<DiscoveryResult> {
         logger.info("Discovering service for $vipAddress.")
 
         if (!currentServices.containsKey(vipAddress)) {
             logger.info("Didn't find a local copy of services for $vipAddress.")
-            fetchServices(vipAddress)
+
+            val fetchServices = fetchServices(vipAddress)
+            return fetchServices.map {
+                logger.info("Got an update for $vipAddress.")
+
+                if (!currentServices.containsKey(vipAddress)) {
+                    val roundRobinList = RoundRobinList(it.toMutableList())
+                    currentServices.put(vipAddress, roundRobinList)
+                    return@map roundRobinList.get()
+                }
+
+                val roundRobinList = currentServices[vipAddress] ?: throw IllegalStateException()
+                roundRobinList.setContent(it.toMutableList())
+                return@map roundRobinList.get()
+            }.map {
+                DiscoveryResult(it.instanceId, it.hostName, it.ipAddress, it.port)
+            }.take(1)
         }
 
         val services = currentServices[vipAddress]
@@ -55,30 +72,17 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
         }
 
         val model = services.get()
-        return DiscoveryResult(model.instanceId, model.hostName, model.ipAddress, model.port)
+        return BehaviorSubject.createDefault(DiscoveryResult(model.instanceId, model.hostName, model.ipAddress, model.port))
     }
 
     /**
      * Fetch the instances for the given service.
      */
-    private fun fetchServices(vipAddress: String) {
+    private fun fetchServices(vipAddress: String): Observable<List<ServiceModel>> {
         logger.info("Beginning fetching from remote for $vipAddress.")
 
         val serviceContainer = ServiceContainer(vipAddress, serviceLoader)
-        serviceContainer.services
-                .subscribeOn(Schedulers.newThread())
-                .subscribe({
-                    logger.info("Got an update for $vipAddress.")
-
-                    if (!currentServices.containsKey(vipAddress)) {
-                        val roundRobinList = RoundRobinList(it.toMutableList())
-                        currentServices.put(vipAddress, roundRobinList)
-                        return@subscribe
-                    }
-
-                    val roundRobinList = currentServices[vipAddress] ?: throw IllegalStateException()
-                    roundRobinList.setContent(it.toMutableList())
-                })
+        return serviceContainer.services
     }
 
     /**
