@@ -7,6 +7,7 @@ import de.d3adspace.mercantor.client.util.RoundRobinList
 import de.d3adspace.mercantor.commons.model.ServiceModel
 import de.d3adspace.mercantor.commons.model.ServiceStatus
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import org.slf4j.LoggerFactory
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -65,6 +66,7 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
 
         val serviceContainer = ServiceContainer(vipAddress, serviceLoader)
         serviceContainer.services
+                .subscribeOn(Schedulers.newThread())
                 .subscribe({
                     logger.info("Got an update for $vipAddress.")
 
@@ -90,7 +92,7 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
 
         val serviceObservable = serviceAgent.registerService()
 
-        serviceObservable.subscribe {
+        serviceObservable.subscribeOn(Schedulers.newThread()).subscribe {
             model.status = ServiceStatus.UP
 
             serviceAgent.startHeartbeats()
