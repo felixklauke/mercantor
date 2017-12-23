@@ -14,4 +14,6 @@ interface MercantorDiscoveryClient {
     fun registerService(vipAddress: String, name: String, host: String, ipAddress: String, port: Int, metaData: Map<String, Any>): Observable<UUID>
 
     fun unregisterService(instanceId: UUID)
+
+    fun reportInvalidService(instanceId: UUID)
 }
