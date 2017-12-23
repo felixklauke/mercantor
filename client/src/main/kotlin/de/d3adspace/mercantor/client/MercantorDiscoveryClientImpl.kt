@@ -47,22 +47,7 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
         if (!currentServices.containsKey(vipAddress)) {
             logger.info("Didn't find a local copy of services for $vipAddress.")
 
-            val fetchServices = fetchServices(vipAddress)
-            return fetchServices.map {
-                logger.info("Got an update for $vipAddress.")
-
-                if (!currentServices.containsKey(vipAddress)) {
-                    val roundRobinList = RoundRobinList(it.toMutableList())
-                    currentServices.put(vipAddress, roundRobinList)
-                    return@map roundRobinList.get()
-                }
-
-                val roundRobinList = currentServices[vipAddress] ?: throw IllegalStateException()
-                roundRobinList.setContent(it.toMutableList())
-                return@map roundRobinList.get()
-            }.map {
-                DiscoveryResult(it.instanceId, it.hostName, it.ipAddress, it.port)
-            }.take(1)
+            return fetchServicesAndConstructSingle(vipAddress)
         }
 
         val services = currentServices[vipAddress]
@@ -73,6 +58,25 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
 
         val model = services.get()
         return BehaviorSubject.createDefault(DiscoveryResult(model.instanceId, model.hostName, model.ipAddress, model.port))
+    }
+
+    private fun fetchServicesAndConstructSingle(vipAddress: String): Observable<DiscoveryResult> {
+        val fetchServices = fetchServices(vipAddress)
+        return fetchServices.map {
+            logger.info("Got an update for $vipAddress.")
+
+            if (!currentServices.containsKey(vipAddress)) {
+                val roundRobinList = RoundRobinList(it.toMutableList())
+                currentServices.put(vipAddress, roundRobinList)
+                return@map roundRobinList.get()
+            }
+
+            val roundRobinList = currentServices[vipAddress] ?: throw IllegalStateException()
+            roundRobinList.setContent(it.toMutableList())
+            return@map roundRobinList.get()
+        }.map {
+            DiscoveryResult(it.instanceId, it.hostName, it.ipAddress, it.port)
+        }.take(1)
     }
 
     /**
