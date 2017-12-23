@@ -122,4 +122,14 @@ class MercantorDiscoveryClientImpl(private val mercantorDiscoveryClientConfig: M
         currentAgents[instanceId]?.destroy()
         currentAgents.remove(instanceId)
     }
+
+    override fun reportInvalidService(instanceId: UUID) {
+        currentServices.values.forEach { currentServiceList ->
+            currentServiceList.getContent()
+                    .filter { it.instanceId == instanceId }
+                    .forEach { currentServiceList.remove(it) }
+        }
+
+        //TODO: Send corresponding heartbeat?
+    }
 }
