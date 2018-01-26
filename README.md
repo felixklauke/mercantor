@@ -8,8 +8,13 @@
 A simple but effective network attached service registry with optional load balancing capabilities used for service discovery in a microservice environment.
 
 # Usage
-- Install [Maven](http://maven.apache.org/download.cgi)
+- Install [Gradle](https://gradle.org/install/)
 - Clone this repo
-- Install: ```mvn clean install```
+- Install: ```gradle build jar```
 
-**Maven dependencies**
+# Example
+_Create client:_
+```kotlin
+val mercantorDiscoveryClient = MercantorDiscoveryClientFactory.
+        createDiscoveryClient(MercantorDiscoveryClientConfig("http://localhost:8080"));
+```
