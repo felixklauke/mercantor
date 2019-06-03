@@ -1,4 +1,4 @@
-FROM maven:3.5.0-jdk-9
+FROM openjdk:11
 
 MAINTAINER Felix Klauke <info@felix-klauke>
 
