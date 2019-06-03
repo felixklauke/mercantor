@@ -1,4 +1,4 @@
-language: kotlin
+language: java
 
 notifications:
   email: false
