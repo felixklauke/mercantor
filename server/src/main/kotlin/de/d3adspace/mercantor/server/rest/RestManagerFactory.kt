@@ -4,7 +4,7 @@ import de.d3adspace.mercantor.core.Mercantor
 import de.d3adspace.mercantor.server.config.MercantorServerConfig
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 object RestManagerFactory {
 

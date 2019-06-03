@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.server.rest
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 interface RestManager {
 

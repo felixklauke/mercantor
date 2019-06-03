@@ -10,7 +10,7 @@ import java.nio.file.Paths
 /**
  * The central bootstrap of the server functionality.
  *
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 object MercantorServerBootstrap {
 

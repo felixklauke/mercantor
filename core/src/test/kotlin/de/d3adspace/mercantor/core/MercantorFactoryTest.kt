@@ -4,7 +4,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Test
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 class MercantorFactoryTest {
 

@@ -13,7 +13,7 @@ import javax.ws.rs.ext.MessageBodyWriter
 import javax.ws.rs.ext.Provider
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 @Provider
 @Produces(MediaType.APPLICATION_JSON)

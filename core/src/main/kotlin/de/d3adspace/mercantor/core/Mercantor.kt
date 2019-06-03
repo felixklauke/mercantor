@@ -7,7 +7,7 @@ import java.util.*
 /**
  * The central interface that defines how all others can interact with mercantor.
  *
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 interface Mercantor {
 

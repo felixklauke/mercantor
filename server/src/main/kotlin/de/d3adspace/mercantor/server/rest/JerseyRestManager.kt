@@ -9,7 +9,7 @@ import org.glassfish.jersey.server.ResourceConfig
 import java.net.URI
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 class JerseyRestManager(private val mercantor: Mercantor, private val config: MercantorServerConfig) : RestManager {
     private lateinit var httpServer: HttpServer

@@ -1,7 +1,7 @@
 package de.d3adspace.mercantor.client.util
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 class RoundRobinList<ContentType>(private var content: MutableList<ContentType>) {
     private var currentPosition: Int = 0

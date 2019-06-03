@@ -4,7 +4,7 @@ import org.junit.After
 import org.junit.Before
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 class MercantorDiscoveryClientConfigTest {
 

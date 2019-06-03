@@ -6,7 +6,7 @@ import de.d3adspace.mercantor.server.resource.MercantorServerResource
 import javax.ws.rs.core.Application
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 class MercantorServerApplication(val mercantor: Mercantor) : Application() {
 

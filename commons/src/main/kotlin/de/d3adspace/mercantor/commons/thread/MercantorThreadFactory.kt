@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 class MercantorThreadFactory(private val namePrefix: String) : ThreadFactory {
 

@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 @Path("/v1")
 @Produces(MediaType.APPLICATION_JSON)

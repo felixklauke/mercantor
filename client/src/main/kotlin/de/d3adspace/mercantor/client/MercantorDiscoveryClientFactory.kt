@@ -3,7 +3,7 @@ package de.d3adspace.mercantor.client
 import de.d3adspace.mercantor.client.config.MercantorDiscoveryClientConfig
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 object MercantorDiscoveryClientFactory {
 

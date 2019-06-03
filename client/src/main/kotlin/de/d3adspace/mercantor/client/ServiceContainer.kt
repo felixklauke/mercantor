@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 class ServiceContainer(private val vipAddress: String, private val serviceLoader: ServiceLoader) {
 

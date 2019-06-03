@@ -5,7 +5,7 @@ import de.d3adspace.mercantor.client.config.MercantorDiscoveryClientConfig;
 import java.util.HashMap;
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class Test {
 

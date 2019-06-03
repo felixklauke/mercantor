@@ -24,7 +24,7 @@ import javax.ws.rs.core.MediaType
  *
  * @see #registerService() and #startHeartsbeats().
  *
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 class ServiceAgent(private val mercantorDiscoveryClientConfig: MercantorDiscoveryClientConfig, private val model: ServiceModel) {
 

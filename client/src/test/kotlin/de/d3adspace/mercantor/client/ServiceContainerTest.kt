@@ -12,7 +12,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(JerseyClient::class)

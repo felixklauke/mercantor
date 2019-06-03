@@ -11,7 +11,7 @@ import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.core.MediaType
 
 /**
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 open class ServiceLoader(private val mercantorDiscoveryClientConfig: MercantorDiscoveryClientConfig) {
 
