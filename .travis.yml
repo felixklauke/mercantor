@@ -1,5 +1,8 @@
 language: java
 
+jdk:
+  - oraclejdk11
+
 notifications:
   email: false
 
