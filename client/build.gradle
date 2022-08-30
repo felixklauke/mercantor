@@ -2,7 +2,7 @@ dependencies {
     compile project(':commons')
 
     compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '3.0.5'
-    compile group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.5'
+    compile group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.7'
 
     compile group: 'ch.qos.logback', name: 'logback-core', version:'1.2.11'
     compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.11'
